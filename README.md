@@ -1,2 +1,2 @@
-# YuanJiShop
-wechat
+# JiNing123
+miniprogram

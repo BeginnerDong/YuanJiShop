@@ -1,0 +1,139 @@
+.container{
+	width:100%;
+	height:100%;
+	padding:0;
+	margin:0px;
+	font-family:PingFang-SC-Medium;
+	position:relative;
+}
+.nickname-container{
+	width:100%;
+	height:130px;
+	background-color:#00A1E9;
+	display:flex;
+	white-space:nowrap;
+}
+.nickname-container image{
+	width:18%;
+	height:50%;
+	padding:9% 5%;
+}
+.nickname-img{
+	width:20%;
+	height:80px;
+	padding:11% 0%;
+}
+.nickname{
+	width:20%;
+	height:20px;
+	font-size:13px;
+	color:#ffffff;
+	padding:0 0 12% 0;
+}
+.score{
+	width:100%;
+	height:20px;
+	display:flex;
+	align-items:center;
+	text-align:left;
+}
+.score image{
+	width:28%;
+	height:18px;
+}
+.score text{
+	width:40%;
+	height:20px;
+	font-size:11px;
+	color:rgb(255,196,31);
+}
+/***********项目列表**********/
+.project-big-container{
+	width:100%;
+	height:300px;
+}
+.project-container{
+	width:90%;
+	margin:8% auto;
+	height:210px;
+	background-color:#ffffff;
+	border-radius:9px;
+	box-shadow:0.5px 0.5px 4px #9E9E9E;
+}
+.item{
+	width:28%;
+	height:50px;
+	float:left;
+	text-align:center;
+	padding:7% 2.5%;
+}
+ .item image{
+	width:35%;
+	height:38px;
+}
+.item text{
+	width:28%;
+	height:20px;
+	font-size:13px;
+	color:rgb(102,102,102);
+	}
+/***********项目列表**********/
+
+/***********加入浮窗**********/
+.float-container{
+	width:70px;
+	height:70px;
+	border-radius:35px;
+	background-color:#00A1E9;
+	color:#ffffff;
+	font-size:13px;
+	poition:abaolute;
+	margin:0% 0 0 73%;
+	display:flex;
+	text-align:center;
+	align-items:center;
+}
+.float-container text{
+	width:40px;
+	padding:0 25%;
+}
+/***********加入浮窗**********/
+
+/***********弹窗**********/
+#modal-bg{ 
+	display: none;
+	position: absolute; 
+	top: 0%; 
+	left: 0%; 
+	width:100%; 
+	height:140%; 
+	background-color:black; 
+	z-index:100; 
+	opacity:.50; 
+	filter: alpha(opacity=88); 
+} 
+#modal{ 
+	display: none;
+	position: absolute; 
+	top:15%; 
+	left:12%; 
+	width:78%; 
+	height:60%; 
+	z-index:101; 
+}
+ #modal #close{
+ 	width:9%;
+ 	height:9%;
+	margin:0 auto;
+	left:42%;
+ 	top:50%;
+ }
+ #modal text{
+	 position:absolute;
+	 font-size:13px;
+	 color:rgb(34,34,34);
+	 top:55%;
+	 left:28%;
+	 font-weight:bold;
+ }
+/***********弹窗**********/

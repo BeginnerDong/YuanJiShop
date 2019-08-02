@@ -1,0 +1,243 @@
+{
+    "pages" : [
+        {
+            "path" : "pages/index/index",
+            "style" : {
+                "navigationBarTitleText" : "抓娃娃",
+                "onReachBottomDistance" : 100
+            }
+        },
+		{
+		    "path" : "pages/playgame/playgame",
+		    "style" : {
+		        "navigationBarTitleText" : "抓娃娃", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/freeprizedraw/freeprizedraw",
+		    "style" : {
+		        "navigationBarTitleText" : "免费抽奖", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/lotteryexplain/lotteryexplain",
+		    "style" : {
+		        "navigationBarTitleText" : "抽奖说明", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/personage/personage",
+		    "style" : {
+		        "navigationBarTitleText" : "个人中心", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/myintegral/myintegral",
+		    "style" : {
+		        "navigationBarTitleText" : "我的积分", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/mycoins/mycoins",
+		    "style" : {
+		        "navigationBarTitleText" : "我的金币", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/pay/pay",
+		    "style" : {
+		        "navigationBarTitleText" : "充值", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/winningrecord/winningrecord",
+		    "style" : {
+		        "navigationBarTitleText" : "中奖记录", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/changecredit/changecredit",
+		    "style" : {
+		        "navigationBarTitleText" : "兑换积分", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/confirmreceipt/confirmreceipt",
+		    "style" : {
+		        "navigationBarTitleText" : "确认收货", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/receivingrecord/receivingrecord",
+		    "style" : {
+		        "navigationBarTitleText" : "收货记录", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/promotionposter/promotionposter",
+		    "style" : {
+		        "navigationBarTitleText" : "推广海报", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/applyforjoining/applyforjoining",
+		    "style" : {
+		        "navigationBarTitleText" : "申请加盟", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/joinexplain/joinexplain",
+		    "style" : {
+		        "navigationBarTitleText" : "加盟说明", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/login_agent/login_agent",
+		    "style" : {
+		        "navigationBarTitleText" : "登录", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/login_merchant/login_merchant",
+		    "style" : {
+		        "navigationBarTitleText" : "登录", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/login_staff/login_staff",
+		    "style" : {
+		        "navigationBarTitleText" : "登录", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/agentportal/agentportal",
+		    "style" : {
+		        "navigationBarTitleText" : "代理入口", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/basicinfo/basicinfo",
+		    "style" : {
+		        "navigationBarTitleText" : "基础信息", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/mystaff/mystaff",
+		    "style" : {
+		        "navigationBarTitleText" : "我的员工", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/mybusiness/mybusiness",
+		    "style" : {
+		        "navigationBarTitleText" : "我的商家", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/flowrecord/flowrecord",
+		    "style" : {
+		        "navigationBarTitleText" : "流水记录", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/commissionrecord/commissionrecord",
+		    "style" : {
+		        "navigationBarTitleText" : "佣金记录", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/withdrawdeposit/withdrawdeposit",
+		    "style" : {
+		        "navigationBarTitleText" : "提现", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/cashaccount/cashaccount",
+		    "style" : {
+		        "navigationBarTitleText" : "提现账号", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/staffentrance/staffentrance",
+		    "style" : {
+		        "navigationBarTitleText" : "员工入口", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/merchantsentrance/merchantsentrance",
+		    "style" : {
+		        "navigationBarTitleText" : "商家入口", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/productsexchange/productsexchange",
+		    "style" : {
+		        "navigationBarTitleText" : "兑换商城", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/productdetails/productdetails",
+		    "style" : {
+		        "navigationBarTitleText" : "商品详情", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/gamedescription/gamedescription",
+		    "style" : {
+		        "navigationBarTitleText" : "游戏说明", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/tothestore/tothestore",
+		    "style" : {
+		        "navigationBarTitleText" : "自提门店", 
+		        "onReachBottomDistance" : 100
+		    }
+		}
+    ],
+    "globalStyle" : {
+		"navigationBarTextStyle": "black",//导航栏文字蓝色
+        "navigationBarBackgroundColor": "#FFFFFF"
+    },
+    "condition" : {
+        //模式配置，仅开发期间生效
+        "current" : 0, //当前激活的模式(list 的索引项)
+        "list" : [
+            {
+                "name" : "", //模式名称
+                "path" : "", //启动页面，必选
+                "query" : "" //启动参数，在页面的onLoad函数里面得到
+            }
+        ]
+    }
+}
