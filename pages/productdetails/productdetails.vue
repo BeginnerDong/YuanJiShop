@@ -7,9 +7,9 @@
 			</view>
 			<view class="header_info">
 				<view style="width: 100%;height: 30rpx;"></view>
-				<view class="header_title">永生花永生花永生花</view>
+				<view class="header_title">{{mainData.title}}</view>
 				<view style="width: 100%;height: 30rpx;"></view>
-				<view class="header_num">￥56.55</view>
+				<view class="header_num">￥{{mainData.price}}</view>
 				<view style="width: 100%;height: 30rpx;"></view>
 				
 			</view>
@@ -19,20 +19,12 @@
 			<view style="width: 100%;height: 30rpx;"></view>
 			<view class="detail_title">商品详情</view>
 			<view style="width: 100%;height: 20rpx;"></view>
-			<view class="detail_main avoidOverflow4"><span>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容。</span></view>
-			<view style="width: 100%;height: 30rpx;"></view>
-			<view class="flex flexCenter">
-				<image class="content_img" src="../../static/images/imh1.png"></image>
-			</view>
-			<view style="width: 100%;height: 30rpx;"></view>
-			<view class="detail_main avoidOverflow4"><span>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容。</span></view>
-			<view style="width: 100%;height: 30rpx;"></view>
-			<view class="detail_main avoidOverflow4"><span>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容。</span></view>
-			<view style="width: 100%;height: 30rpx;"></view>
-			<view class="detail_main avoidOverflow4"><span>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容。</span></view>
-			<view style="width: 100%;height: 80rpx;"></view>
+			<view class="detail_main">
+				<view class="content ql-editor" v-html="mainData.content">
+				</view>
+			</view>	
 		</view>
-		<view class="change" @click="webself.$Router.navigateTo({route:{path:'/pages/confirmreceipt/confirmreceipt'}})">
+		<view class="change" @click="webself.$Router.navigateTo({route:{path:'/pages/confirmreceipt/confirmreceipt?id='+id}})">
 			<view class="changeBtn">立即兑换</view>
 		</view>
 	</view>
@@ -41,15 +33,49 @@
 <script>
 	export default {
 		components: {
-			
+
 		},
 		data() {
 			return {
-				webself:this
+				webself: this,
+				mainData:{},
+				id:''
 			}
 		},
-		methods: {
+		onLoad() {
+			const self = this;
 			
+			var options = self.$Utils.getHashParameters();
+			if(options[0].id){
+				self.id = options[0].id
+			}
+			self.$Utils.loadAll(['getMainData'], self);
+		},
+
+	
+
+		methods: {
+
+
+			getMainData() {
+				const self = this;
+				const postData = {
+			
+					searchItem: {
+						thirdapp_id: 2,
+						id:self.id
+					},
+				};
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData = res.info.data[0]
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.productGet(postData, callback);
+			},
 		},
 	};
 </script>

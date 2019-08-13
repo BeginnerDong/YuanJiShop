@@ -23,42 +23,17 @@
 			</view>
 			<view class="bearbox clearfix">
 				<view class="bear flex flexCenter">
-					<view class="bearbox_item flex flexCenter">
-						<image style="width: 160rpx;height: 188rpx;" src="../../static/images/home-img1.png"></image>
+					
+					<view class="bearbox_item flex flexCenter" v-for="item in mainData">
+						<image style="width: 160rpx;height: 188rpx;" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
 						<view class="bearbox_item_info">
-							<span class="bear_item_name">毛绒熊</span>
+							<span class="bear_item_name">{{item.title}}</span>
 						</view>
 						<view class="bearbox_item_msg">
-							<span class="bear_item_height">60cm</span>
+							<span class="bear_item_height">{{item.description}}</span>
 						</view>
 					</view>
-					<view class="bearbox_item flex flexCenter">
-						<image style="width: 146rpx;height: 197rpx;" src="../../static/images/home-img2.png"></image>
-						<view class="bearbox_item_info">
-							<span class="bear_item_name">穿衣熊</span>
-						</view>
-						<view class="bearbox_item_msg">
-							<span class="bear_item_height">60cm</span>
-						</view>
-					</view>
-					<view class="bearbox_item flex flexCenter">
-						<image style="width: 141rpx;height: 198rpx;" src="../../static/images/home-img3.png"></image>
-						<view class="bearbox_item_info">
-							<span class="bear_item_name">iPhoneX</span>
-						</view>
-						<view class="bearbox_item_msg">
-							<span class="bear_item_height">64G</span>
-						</view>
-					</view>
-					<view class="bearbox_item flex flexCenter">
-						<image style="width: 165rpx;height: 202rpx;" src="../../static/images/home-img4.png"></image>
-						<view class="bearbox_item_info">
-							<span class="bear_item_name">惊喜包</span>
-						</view>
-						<view class="bearbox_item_msg">
-							<span class="bear_item_height">随机大奖</span>
-						</view>
-					</view>
+				
 				</view>
 			</view>
 		</view>
@@ -69,7 +44,7 @@
 				<view class="recharge_box flex">
 					<view class="recharge_box_info flex">
 						<image class="recharge_logo" src="../../static/images/home-icon4.png"></image>
-						<span class="recharge_txt">50</span>
+						<span class="recharge_txt">{{userData.info?userData.info.balance:''}}</span>
 					</view>
 					<view class="recharge_msg flex"  @click="webself.$Router.navigateTo({route:{path:'/pages/pay/pay'}})">
 						<span class="recharge_btn">充值</span>
@@ -80,7 +55,7 @@
 			<view class="start flex flexCenter">
 				<view class="start_box clearfix flex flexCenter">
 					<image style="width: 186rpx;height: 190rpx;position: absolute;" src="../../static/images/home-icon5.png"></image>
-					<view class="start_info">
+					<view class="start_info" @click="draw">
 						<view class="start_info_begin">开始</view>
 						<view style="width: 100%;height: 16rpx;"></view>
 						<view class="start_info_time">10币/一次</view>
@@ -92,18 +67,103 @@
 </template>
 
 <script>
+	
 	export default {
 		components: {
 			
 		},
+		data() {
+			return {
+				webself:this,
+				mainData:[],
+				userData:{}
+			}
+		},
+		
+		onLoad() {		
+			const self = this;
+			self.timestampNow = (new Date()).getTime();
+			var options = self.$Utils.getHashParameters();	
+			self.$Utils.loadAll(['getMainData','tokenGet'], self);			
+		},
+		
+	
+		
 		methods: {
 			
+			tokenGet() {
+				const self = this;
+				const postData = {
+					searchItem: {
+						user_no: 'U111111'
+					}
+				};
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.solely_code == 100000) {
+						uni.setStorageSync('user_token', res.token);
+						uni.setStorageSync('user_no', res.info.user_no);
+						uni.setStorageSync('user_info', res.info);
+						uni.setStorageSync('token_expire_time',1565505988000)
+					}
+					console.log('res', res)
+					self.getUserData()
+				};
+				self.$apis.tokenGet(postData, callback);
+			},
+			
+			getUserData() {
+				const self = this;
+				const postData = {
+					tokenFuncName:'getProjectToken'
+				};
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.userData = res.info.data[0]	
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('tokenGet');
+				};
+				self.$apis.userGet(postData, callback);
+			},
+			
+			getMainData() {
+				const self = this;
+				const postData = {
+					searchItem:{
+						thirdapp_id: 2,
+						type:['in',[3,4]]
+					}				
+				};
+				
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData,res.info.data)	
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.productGet(postData, callback);
+			},
+			
+			draw() {
+				const self = this;
+				const postData = {	
+					tokenFuncName:'getProjectToken'
+				};			
+				console.log('postData', postData)
+				const callback = (res) => {
+					self.$Utils.showToast(res.msg,'none');
+					console.log('res', res)
+
+				};
+				self.$apis.draw(postData, callback);
+			},
+			
+			
 		},
-		data(){
-			return{
-				webself:this
-			}
-		}
 	};
 </script>
 

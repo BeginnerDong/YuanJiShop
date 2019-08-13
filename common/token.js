@@ -45,9 +45,9 @@ class Token {
 	        };
 			console.log('getProjectToken',callback)
 			if(callback){
-				this.getUserInfo(params,callback);
+				this.getWeixinToken(params,callback);
 			}else{
-				this.getUserInfo(params);
+				this.getWeixinToken(params);
 			};    
 	    }else{
 	        return uni.getStorageSync('user_token');
@@ -265,17 +265,43 @@ class Token {
         
     }
     
-    getMerchantToken(callback,postData) { 
-        if((postData&&postData.refreshToken)||!uni.getStorageSync('merchant_token')){
-            uni.removeStorageSync('merchant_token');
-            uni.removeStorageSync('merchant_info');
-            uni.redirectTo({
-              url: '/pages/login/login'
-            });
-        }else{
-            return uni.getStorageSync('merchant_token');
-        }
-    }
+    
+	
+	 getAgentToken(callback,postData) { 
+	    if((postData&&postData.refreshToken)||!uni.getStorageSync('agentToken')){
+	        uni.removeStorageSync('agentToken');
+	        uni.removeStorageSync('agentInfo');
+	        uni.redirectTo({
+	          url: '/pages/login_agent/login_agent'
+	        });
+	    }else{
+	        return uni.getStorageSync('agentToken');
+	    }
+	}
+	
+	getShopToken(callback,postData) { 
+	    if((postData&&postData.refreshToken)||!uni.getStorageSync('shopToken')){
+	        uni.removeStorageSync('shopToken');
+	        uni.removeStorageSync('shopInfo');
+	        uni.redirectTo({
+	          url: '/pages/login_merchant/login_merchant'
+	        });
+	    }else{
+	        return uni.getStorageSync('shopToken');
+	    }
+	}
+	
+	getStaffToken(callback,postData) { 
+	    if((postData&&postData.refreshToken)||!uni.getStorageSync('staffToken')){
+	        uni.removeStorageSync('staffToken');
+	        uni.removeStorageSync('staffInfo');
+	        uni.redirectTo({
+	          url: '/pages/login_staff/login_staff'
+	        });
+	    }else{
+	        return uni.getStorageSync('staffToken');
+	    }
+	}
    
 
 

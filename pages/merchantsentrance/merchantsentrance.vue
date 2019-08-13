@@ -7,18 +7,18 @@
 					<view class="mine flex">
 						<view class="mine_info flex flexCenter">
 							<view class="mine_info_logo">
-								<image class="my_icon" src="../../static/images/about-img.png"></image>
+								<image class="my_icon" :src="userData.headImgUrl"></image>
 							</view>
 							<view style="width: 100%;height: 10rpx;"></view>
-							<view class="my_word">快乐猫</view>
+							<view class="my_word">{{userData.info?userData.info.name:''}}</view>
 							<view style="width: 100%;height: 20rpx;"></view>
-							<view class="my_word mine_money">我的余额 ： 300</view>
+							<view class="my_word mine_money">我的余额 ： {{userData.info?userData.info.balance:''}}</view>
 						</view>
 					</view>
 				</view>
 				<view class="signIn">
 					<view class="signIn_box flex">
-						<view class="signIn_info flex" @click="webself.$Router.navigateTo({route:{path:'/pages/basicinfo/basicinfo'}})">
+						<view class="signIn_info flex" @click="webself.$Router.navigateTo({route:{path:'/pages/basicinfo/basicinfo?level=shop'}})">
 							<image style="width: 26rpx;height: 26rpx;margin-right: 10rpx;" src="../../static/images/agent-icon5.png" mode=""></image>
 							<span class="signIn_info_txt">基础信息</span>
 						</view>
@@ -50,15 +50,6 @@
 			</view>
 		</view>
 		<!--浮窗-->
-		<view class="mask" v-if="showView">
-			<span class="sucess_text">恭喜获得10金币~</span>
-			<view class="alertFcBox flex flexCenter" v-if="showView">
-				<img style="width: 602rpx;height: 403rpx;z-index:20 ;" src="../../static/images/success.png" alt="">
-				<view>
-					<img class="closeBtn" @click="closeAlert"  src="../../static/images/wrong-icon.png" alt="">
-				</view>
-			</view>
-		</view>
 	</view>
 </template>
 
@@ -72,6 +63,7 @@
 			return {
 				showView: false,
 				webself:this,
+				userData:{},
 				my_list:[
 					{
 						"my_src":"../../static/images/about-icon3.png",
@@ -91,14 +83,54 @@
 				]
 			}
 		},
+		onLoad() {		
+			const self = this;
+			
+			var options = self.$Utils.getHashParameters();	
+			self.$Utils.loadAll(['userUpdate'], self);			
+		},
+		
 		methods: {
+			
+			userUpdate() {
+				const self = this;
+				const postData = {
+					tokenFuncName:'getShopToken',
+					data:{
+						headImgUrl:uni.getStorageSync('user_info').headImgUrl,
+					}
+				};
+				console.log('postData', postData)
+				const callback = (res) => {
+					self.getUserData()
+					console.log('res', res)	
+				};
+				self.$apis.userUpdate(postData, callback);
+			},
+			
+			getUserData() {
+				const self = this;
+				const postData = {
+					tokenFuncName:'getShopToken'
+				};
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.userData = res.info.data[0]	
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('userUpdate');
+				};
+				self.$apis.userGet(postData, callback);
+			},
+			
 			goPage(id) {
 			    if(id=="promotionposter"){
-					this.$Router.navigateTo({route:{path:'/pages/promotionposter/promotionposter'}});
+					this.$Router.navigateTo({route:{path:'/pages/promotionposter/promotionposter?level=shop'}});
 				}else if(id=="flowrecord"){
-					this.$Router.navigateTo({route:{path:'/pages/flowrecord/flowrecord'}});
+					this.$Router.navigateTo({route:{path:'/pages/flowrecord/flowrecord?level=shop'}});
 				}else if(id=="commissionrecord"){
-					this.$Router.navigateTo({route:{path:'/pages/commissionrecord/commissionrecord'}});
+					this.$Router.navigateTo({route:{path:'/pages/commissionrecord/commissionrecord?level=shop'}});
 				}
 			}
 		},

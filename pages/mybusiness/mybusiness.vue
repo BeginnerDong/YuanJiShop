@@ -3,7 +3,7 @@
 		<!-- header部分 -->
 		<view class="header flex flexCenter">
 			<view class="header_centerbox flex">
-				<view class="num">15</view>
+				<view class="num">{{total}}</view>
 				<view style="width: 100%;height: 50rpx;"></view>
 				<view class="unit">个</view>
 			</view>
@@ -11,35 +11,35 @@
 		<view style="width: 100%;height: 30rpx;"></view>
 		<!-- list部分 -->
 		<view class="list">
-			<view class="list_item" v-for="(item,index) in my_list" :key="index">
+			<view class="list_item" v-for="(item,index) in mainData" :key="index">
 				<view class="list_item_info">
 					<view style="width: 100%;height: 20rpx;"></view>
 					<view class="list_item_left_info flex">
 						<view style="width: 30rpx;height: 100%;"></view>
 						<view class="item_tit">账号 : </view>
 						<view style="width: 60rpx;height: 100%;"></view>
-						<view class="item_main">{{item.my_list_acount}}</view>
+						<view class="item_main">{{item.user&&item.user[0]?item.user[0].login_name:''}}</view>
 					</view>
 					<view style="width: 100%;height: 30rpx;"></view>
 					<view class="list_item_left_info flex">
 						<view style="width: 30rpx;height: 100%;"></view>
 						<view class="item_tit">名称 : </view>
 						<view style="width: 60rpx;height: 100%;"></view>
-						<view class="item_main">{{item.my_list_name}}</view>
+						<view class="item_main">{{item.user&&item.user[0]&&item.user[0].info?item.user[0].info.name:''}}</view>
 					</view>
 					<view style="width: 100%;height: 30rpx;"></view>
 					<view class="list_item_left_info flex">
 						<view style="width: 30rpx;height: 100%;"></view>
 						<view class="item_tit">电话 : </view>
 						<view style="width: 60rpx;height: 100%;"></view>
-						<view class="item_main">{{item.my_list_tel}}</view>
+						<view class="item_main">{{item.user&&item.user[0]&&item.user[0].info?item.user[0].info.phone:''}}</view>
 					</view>
 					<view style="width: 100%;height: 30rpx;"></view>
 					<view class="list_item_left_info flex">
 						<view style="width: 30rpx;height: 100%;"></view>
 						<view class="item_tit"> 所属员工: </view>
 						<view style="width: 60rpx;height: 100%;"></view>
-						<view class="item_main">{{item.my_list_staff}}</view>
+						<view class="item_main">111</view>
 					</view>
 					<view style="width: 100%;height: 40rpx;"></view>
 				</view>
@@ -58,32 +58,84 @@
 		data() {
 			return {
 				webself:this,
-				my_list:[
-					{
-						"my_list_acount":"15698563220",
-						"my_list_name":"哆啦A梦",
-						"my_list_tel":"15698563220",
-						"my_list_staff":"张丹"
-						
-					},
-					{
-						"my_list_acount":"15698563220",
-						"my_list_name":"哆啦A梦",
-						"my_list_tel":"15698563220",
-						"my_list_staff":"张丹"
-						
-					},
-					{
-						"my_list_acount":"15698563220",
-						"my_list_name":"哆啦A梦",
-						"my_list_tel":"15698563220",
-						"my_list_staff":"张丹"
-					}
-				]
+				mainData:[],
+				total:''
 			}
 		},
+		
+		onLoad() {
+			const self = this;
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			var options = self.$Utils.getHashParameters();
+			console.log(options)
+			if(options[0].level){
+				self.level = options[0].level
+			};
+			console.log(self.level)
+			self.$Utils.loadAll(['getMainData'], self);
+		},
+		
+		onReachBottom() {
+			console.log('onReachBottom')
+			const self = this;
+			if (!self.isLoadAll && uni.getStorageSync('loadAllArray')) {
+				self.paginate.currentPage++;
+				self.getMainData()
+			};
+		},
+		
 		methods: {
+		
 			
+		
+			getMainData(isNew) {
+				const self = this;
+				if (isNew) {
+					self.mainData = [];
+					self.paginate = {
+						count: 0,
+						currentPage: 1,
+						pagesize: 5,
+						is_page: true,
+					}
+				};
+				const postData = {
+					tokenFuncName: 'getAgentToken',
+					searchItem: {
+						parent_no:uni.getStorageSync('agentNo'),
+						level: 1
+					},
+					paginate: self.$Utils.cloneForm(self.paginate),
+					getAfter:{
+						user:{
+							tableName:'User',
+							middleKey:'child_no',
+							key:'user_no',
+							condition:'=',
+							searchItem:{
+								status:1
+							}
+						}
+					}
+				};
+				if(self.level&&self.level=='agent'){
+					postData.searchItem.level=2
+				}else if(self.level&&self.level=='staff'){
+					postData.tokenFuncName = 'getStaffToken';
+					postData.searchItem.parent_no=uni.getStorageSync('staffNo')
+				}
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData.push.apply(self.mainData, res.info.data)
+						
+					}
+					self.total = res.info.total;
+					console.log('res', res)
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.distriGet(postData, callback);
+			},
 		},
 	};
 </script>

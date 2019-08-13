@@ -5,28 +5,65 @@
 			<image style="width: 366rpx;height: 91rpx;" src="../../static/images/instructions-icon.png"></image>
 			<view style="width: 100%;height: 30rpx;"></view>
 		</view>
-		<view class="content">
-			<view class="content_title avoidOverflow">1.内容内容内容内容内容内容内容内容</view>
-			<view class="content_detailInfo">
-				<view style="width: 100%;height: 30rpx;"></view>
-				<view class="info">
-					<p class="paragraph avoidOverflow3">(1) 内容内容内容内容内容内容内容内容内容内容内内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
-					<view style="width: 100%;height: 20rpx;"></view>
-				</view>
-				<view class="info">
-					<p class="paragraph avoidOverflow3">(2) 内容内容内容内容内容内容内容内容内容内容内内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
-					<view style="width: 100%;height: 20rpx;"></view>
-				</view>
-				<view class="info">
-					<p class="paragraph avoidOverflow3">(3) 内容内容内容内容内容内容内容内容内容内容内内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
-					<view style="width: 100%;height: 20rpx;"></view>
-				</view>
+		<view class="">
+			<view class="content ql-editor" v-html="mainData.content">
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	export default {
+		
+		data() {
+			return {
+				mainData:{},
+				webself:this,
+			
+			}
+		},
+		
+		onLoad() {		
+			const self = this;
+			
+			var options = self.$Utils.getHashParameters();	
+			self.$Utils.loadAll(['getMainData'], self);			
+		},
+		
+		
+		methods: {
+			
+			
+			getMainData() {
+				const self = this;
+				const postData = {
+					searchItem:{
+						thirdapp_id:2
+					}			
+				};
+				postData.getBefore = {
+					article: {
+						tableName: 'Label',
+						searchItem: {
+							title: ['=', ['抽奖说明']],
+						},
+						middleKey: 'menu_id',
+						key: 'id',
+						condition: 'in',
+					},
+				};
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData = res.info.data[0]	
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.articleGet(postData, callback);
+			},
+		},
+	};
 </script>
 
 <style scoped>

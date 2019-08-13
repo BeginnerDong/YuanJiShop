@@ -10,15 +10,18 @@
 					<view style="width: 100%;height: 30rpx;"></view>
 					<view class="content_item_main flex">
 						<view>
-							<image class="item_icon" :src="mainData.mainImg&&mainData.mainImg[0]?mainData.mainImg[0].url:''"></image>
+							<image class="item_icon" 
+							:src="mainData.product&&mainData.product[0]&&mainData.product[0].mainImg&&mainData.product[0].mainImg[0]?mainData.product[0].mainImg[0].url:''"></image>
 						</view>
 						<view style="width: 30rpx;height: 100%;"></view>
 						<view class="content_item_main_right">
 							<view>
 								<view style="width: 100%;height: 20rpx;"></view>
-								<span class="item_name">{{mainData.title}}</span>
+								<span class="item_name">{{mainData.product&&mainData.product[0]?mainData.product[0].title:''}}</span>
 							</view>
-							<view class="item_info avoidOverflow">{{mainData.description}}</view>
+							<view class="item_info avoidOverflow">
+								商品价值=金币{{mainData.product&&mainData.product[0]?mainData.product[0].price:''}}/积分{{mainData.product&&mainData.product[0]?mainData.product[0].score:''}}
+							</view>
 						</view>
 					</view>
 					<view style="width: 100%;height: 50rpx;"></view>
@@ -81,7 +84,7 @@
 					</view>
 				</view>
 				<view style="width: 100%;height: 250rpx;"></view>
-				<view class="confirm" @click="addOrder">确认</view>
+				<view class="confirm" @click="updateOrder">确认</view>
 			</view>
 		</view>
 	</view>
@@ -106,8 +109,8 @@
 			const self = this;
 
 			var options = self.$Utils.getHashParameters();
-			if (options[0].id) {
-				self.id = options[0].id
+			if (options[0].order_nno) {
+				self.order_nno = options[0].order_nno
 			}
 		},
 
@@ -174,10 +177,21 @@
 			getMainData() {
 				const self = this;
 				const postData = {
-
+					tokenFuncName:'getProjectToken',
 					searchItem: {
 						thirdapp_id: 2,
-						id: self.id
+						order_no: self.order_no
+					},
+				};
+				postData.getAfter = {
+					product: {		
+						tableName: 'Product',
+						searchItem: {
+							status: 1
+						},
+						middleKey: 'product_no',
+						key: 'product_no',
+						condition: 'in',
 					},
 				};
 				console.log('postData', postData)
@@ -188,24 +202,21 @@
 					console.log('res', res)
 					self.$Utils.finishFunc('getMainData');
 				};
-				self.$apis.productGet(postData, callback);
+				self.$apis.orderGet(postData, callback);
 			},
-
-			addOrder() {
+			
+			updateOrder() {
 				const self = this;
-				var orderList = [];
-				orderList.push({
-					product: [{
-						id: self.id,
-						count: 1,
-					}]
-				})
 				const postData = {
 					tokenFuncName: 'getProjectToken',
-					orderList: orderList,
-					type: self.mainData.type,
-					data:{}
-					
+					searchItem: {
+						thirdapp_id: 2,
+						order_no: self.order_no
+					},
+					data:{
+						reward_type:2,
+						reward_status:1
+					},
 				};
 				if(self.type==1){
 					if(self.userData.info.address==''){
@@ -231,73 +242,23 @@
 						}
 					}
 				}
+				console.log('postData', postData)
 				const callback = (res) => {
-
-					if (res && res.solely_code == 100000) {
-						self.orderId = res.info.id;
-						self.pay(self.orderId)
-					} else {
-
-						uni.showToast({
-							title: res.msg,
-							duration: 2000
-						});
-					};
+					if (res.solely_code==100000) {
+						self.$Utils.showToast('提交成功','none');
+						setTimeout(function() {
+							self.$Router.redirectTo({route:{path:'/pages/winningrecord/winningrecord'}})
+						}, 500);
+					}else{
+						self.$Utils.showToast(res.msg,'none');
+					}
+					console.log('res', res)
+					
 				};
-				self.$apis.addOrder(postData, callback);
+				self.$apis.orderUpdate(postData, callback);
 			},
 
-			pay(order_id) {
-				const self = this;
-				var price = parseFloat(self.mainData.price);
-				const postData = {
-					score:parseFloat(price)
-				};
-				
-				postData.tokenFuncName = 'getProjectToken',
-				postData.searchItem = {
-					id: self.orderId
-				};
 			
-				const callback = (res) => {
-					if (res.solely_code == 100000) {
-						if (res.info) {
-							const payCallback = (payData) => {
-								console.log('payData', payData)
-								if (payData == 1) {
-									uni.showToast({
-										title: '支付成功',
-										duration: 2000,
-										success: function() {
-
-										}
-									});
-								} else {
-
-									uni.showToast({
-										title: '支付失败',
-										duration: 2000
-									});
-								};
-							};
-							self.$Utils.realPay(res.info, payCallback);
-						} else {
-
-							uni.showToast({
-								title: '支付成功',
-								duration: 2000
-							});
-						};
-					} else {
-						uni.setStorageSync('canClick', true);
-						uni.showToast({
-							title: '支付参数有误',
-							duration: 2000
-						});
-					};
-				};
-				self.$apis.pay(postData, callback);
-			},
 		},
 	};
 </script>

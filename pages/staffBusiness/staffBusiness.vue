@@ -48,7 +48,7 @@
 		</view>
 		<view class="addstaff" @click="showAlert">
 			<view class="addstaff_box flex flexCenter">
-				<span>添加员工</span>
+				<span>添加商家</span>
 			</view>
 		</view>
 		<!--加入员工浮窗-->
@@ -104,7 +104,7 @@
 						<img class="closeBtn" @click="closedelAlert" src="../../static/images/wrong-icon.png" alt="">
 					</view>
 					<view style="width: 100%;height: 40rpx;"></view>
-					<view class="flex flexCenter">是否确认删除该员工?</view>
+					<view class="flex flexCenter">是否确认删除该商家?</view>
 					<view style="width: 100%;height: 80rpx;"></view>
 					<view class="flex">
 						<view class="select flex flexCenter">
@@ -140,7 +140,7 @@
 					password:'',
 					name:'',
 					phone:'',
-					behavior:2
+					behavior:3
 				}
 			}
 		},
@@ -176,9 +176,9 @@
 					}
 				};
 				const postData = {
-					tokenFuncName: 'getAgentToken',
+					tokenFuncName: 'getStaffToken',
 					searchItem: {
-						parent_no:uni.getStorageSync('agentNo'),
+						parent_no:uni.getStorageSync('staffNo'),
 						level: 1
 					},
 					paginate: self.$Utils.cloneForm(self.paginate),
@@ -211,7 +211,7 @@
 				const self = this;
 				if (self.$Utils.checkComplete(self.submitData)) {
 					const postData = {
-						tokenFuncName: 'getAgentToken',		
+						tokenFuncName: 'getStaffToken',		
 						data: self.$Utils.cloneForm(self.submitData),
 					};
 					console.log('postData', postData)
@@ -246,7 +246,7 @@
 			deleteAcount(index) {
 				const self = this;				
 				const postData = {
-					tokenFuncName: 'getAgentToken',		
+					tokenFuncName: 'getStaffToken',		
 					data: {
 						status:-1
 					},
@@ -322,10 +322,10 @@
 	}
 
 	.list_item {
-		margin: 0 30rpx;
+		
 		justify-content: space-between;
 		border-bottom: solid 1px #EAEAEA;
-		border-radius: 30rpx;
+		
 	}
 
 	.list_item_name {
@@ -343,6 +343,7 @@
 	.list_item_info {
 		width: 100%;
 		background: #FFFFFF;
+		border-radius: 20rpx;
 	}
 
 	.list_item_left_info {

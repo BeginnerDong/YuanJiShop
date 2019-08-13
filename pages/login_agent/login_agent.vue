@@ -9,18 +9,18 @@
 				<view class="flex">
 					<image class="login_icon"  src="../../static/images/login-icon1.png"></image>
 				</view>
-				<view><input class="login_txt" type="text" placeholder="请输入账号"></view>
+				<view><input class="login_txt" type="text" placeholder="请输入账号" v-model="submitData.login_name"></view>
 			</view>
 			<view class="user_info_item flex">
 				<view class="flex">
 					<image class="login_icon"  src="../../static/images/login-icon2.png"></image>
 				</view>
-				<view><input class="login_txt" type="text" placeholder="请输入您的密码"></view>
+				<view><input class="login_txt" type="text" placeholder="请输入您的密码" v-model="submitData.password"></view>
 			</view>
 		</view>
 		<view style="width: 100%;height: 186rpx;"></view>
 		<view class="confirm flex flexCenter">
-			<view class="confirm_box" @click="webself.$Router.navigateTo({route:{path:'/pages/agentportal/agentportal'}})">登录</view>
+			<view class="confirm_box" @click="submit">登录</view>
 		</view>
 	</view>
 </template>
@@ -29,10 +29,52 @@
 	export default {
 		data() {
 			return {
-				webself:this
+				webself:this,
+				submitData:{
+					login_name:'',
+					password:''
+				}
 			}
 		},
+		
+		onLoad(options) {
+			const self = this;
+			if (uni.getStorageSync('agentToken')) {
+				uni.redirectTo({
+					url: '/pages/agentportal/agentportal'
+				})
+			};
+		},
+		
 		methods: {
+			
+			submit() {
+				const self = this;
+			
+				const postData = {
+					login_name: self.submitData.login_name,
+					password:self.submitData.password
+				};
+				if (self.$Utils.checkComplete(self.submitData)) {
+					
+					const callback = (res) => {
+						if (res.solely_code == 100000) {
+							console.log(res);
+							uni.setStorageSync('agentToken', res.token);
+							uni.setStorageSync('agentNo', res.info.user_no);
+							uni.setStorageSync('agentInfo', res.info);
+							uni.redirectTo({
+								url: '/pages/agentportal/agentportal'
+							})
+						} else {
+							self.$Utils.showToast(res.msg,'none')
+						}
+					}
+					self.$apis.agentLogin(postData, callback);
+				} else {
+					self.$Utils.showToast('请补全登录信息', 'none')
+				};
+			},
 			
 		},
 	};

@@ -10,21 +10,21 @@
 								<image class="my_icon" src="../../static/images/about-img.png"></image>
 							</view>
 							<view class="mine_info_name">
-								<view class="my_name"><span>快乐猫</span></view>
+								<view class="my_name"><span>{{userData.nickname}}</span></view>
 								<view style="width: 100%;height: 30rpx;"></view>
-								<view class="my_degree">V会员</view>
+								<view class="my_degree" v-if="userData.info&&userData.info.balance>0">V会员</view>
 							</view>
 						</view>
-						<view class="mine_playgame" @click="webself.$Router.navigateTo({route:{path:'/pages/playgame/playgame'}})">
+						<view class="mine_playgame" @click="webself.$Router.redirectTo({route:{path:'/pages/playgame/playgame'}})">
 							<span class="playgame_txt">玩游戏</span>
 						</view>
 					</view>
 				</view>
 				<view class="signIn">
 					<view class="signIn_box flex">
-						<view class="signIn_info flex" @click="showAlert">
+						<view class="signIn_info flex" @click="signIn">
 							<image style="width: 26rpx;height: 26rpx;margin-right: 10rpx;" src="../../static/images/about-icon7.png" mode=""></image>
-							<span class="signIn_info_txt">签到</span>
+							<span class="signIn_info_txt">{{userData.log&&userData.log.length>0?'已签到':'签到'}}</span>
 						</view>
 					</view>
 				</view>
@@ -73,7 +73,7 @@
 		</view>
 		<!--浮窗-->
 		<view class="mask" v-if="showView">
-			<span class="sucess_text">恭喜获得10金币~</span>
+			<span class="sucess_text">恭喜获得{{reward}}金币~</span>
 			<view class="alertFcBox flex flexCenter" v-if="showView">
 				<img style="width: 602rpx;height: 403rpx;z-index:20 ;" src="../../static/images/success.png" alt="">
 				<view>
@@ -92,6 +92,8 @@
 		},
 		data() {
 			return {
+				userData:{},
+				reward:'',
 				showView: false,
 				webself:this,
 				my_list:[
@@ -145,6 +147,15 @@
 				]
 			}
 		},
+		
+		onLoad() {		
+			const self = this;
+			self.reward  = uni.getStorageSync('user_info').thirdApp.custom_rule.sign;
+			var options = self.$Utils.getHashParameters();	
+			self.$Utils.loadAll(['getUserData'], self);			
+		},
+		
+		
 		methods: {
 			goPage(id) {
 				if(id=="myintegral"){
@@ -167,6 +178,73 @@
 					this.$Router.navigateTo({route:{path:'/pages/login_merchant/login_merchant'}});
 				}
 			},
+			
+			getUserData() {
+				const self = this;
+			
+				const postData = {
+					tokenFuncName:'getProjectToken'
+				};
+				postData.getAfter = {
+					log:{
+						tableName:'Log',
+						middleKey:'user_no',
+						key:'user_no',
+						searchItem:{
+							status:1,
+							create_time:['between',[new Date(new Date().toLocaleDateString()).getTime()/1000,
+							new Date(new Date().toLocaleDateString()).getTime() +24 * 60 * 60  -1]]
+						},
+						condition:'='
+					}
+				},
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.userData = res.info.data[0]	
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('getUserData');
+				};
+				self.$apis.userGet(postData, callback);
+			},
+			
+			signIn(){
+				const self = this;
+				
+				if(self.userData.log.length>0){
+					self.$Utils.showToast('今日已签到','none');
+				}else{
+					const postData = {
+						tokenFuncName:'getProjectToken',
+						data:{
+							type:1
+						},
+						saveAfter:[{
+							tableName: 'FlowLog',
+							FuncName: 'add',
+							data: {
+								user_no: uni.getStorageSync('user_no'),
+								count: self.reward,
+								type:2,
+								thirdapp_id:2,
+								trade_info:'签到'
+							}
+						}]
+					};
+					const callback = (res) => {
+						if (res.solely_code==100000) {
+							self.showView = true;
+							self.getUserData()
+						}else{
+							self.$Utils.showToast(res.msg,'none');
+						}
+					};
+					self.$apis.logAdd(postData, callback);
+				}
+			},
+			
+			
 			showAlert(){
 				this.showView = true;
 			},

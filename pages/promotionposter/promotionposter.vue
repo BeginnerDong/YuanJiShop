@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<image :src="mainData.url" style="position: absolute;top:20%;width: 55%;height: 35%;;left:22%"></image>
 		<view class="footer">
 			<view class="footer_box">
 				<span class="notice">注：用户每天登陆或者推广其他用户均可以获取玩游戏次数</span>
@@ -13,11 +14,44 @@
 	export default {
 		data() {
 			return {
-				webself:this
+				webself:this,
+				mainData:''
 			}
 		},
-		methods: {
+		
+		onLoad() {		
+			const self = this;
 			
+			var options = self.$Utils.getHashParameters();
+			if(options[0].level){
+				self.level = options[0].level
+			}
+			self.$Utils.loadAll(['getMainData'], self);			
+		},
+		
+		methods: {
+				
+				getMainData() {
+					const self = this;
+					const postData = {};
+					postData.tokenFuncName = 'getProjectToken';
+					postData.param = 'http://106.12.155.217/yjsc/wx/?parent_no=' + uni.getStorageSync(
+							'user_no') + '#/pages/index/index',
+					postData.ext = 'png';
+					if(self.level&&self.level=='shop'){
+						postData.tokenFuncName = 'getShopToken';
+						postData.param = 'http://106.12.155.217/yjsc/wx/?parent_no=' + uni.getStorageSync(
+								'shopNo') + '#/pages/index/index',
+						postData.ext = 'png';
+					}
+					const callback = (res) => {
+						console.log(res);
+						self.mainData = res.info;
+						self.$Utils.finishFunc('getMainData');
+					};
+					self.$apis.getQrCommonCode(postData, callback);
+				},
+				
 		}
 	};
 </script>

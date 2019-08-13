@@ -1,12 +1,12 @@
 {
     "pages" : [
-        {
+       /* {
             "path" : "pages/index/index",
             "style" : {
                 "navigationBarTitleText" : "抓娃娃",
                 "onReachBottomDistance" : 100
             }
-        },
+        }, */
 		{
 		    "path" : "pages/playgame/playgame",
 		    "style" : {
@@ -155,6 +155,13 @@
 		    }
 		},
 		{
+		    "path" : "pages/staffBusiness/staffBusiness",
+		    "style" : {
+		        "navigationBarTitleText" : "我的商家", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
 		    "path" : "pages/flowrecord/flowrecord",
 		    "style" : {
 		        "navigationBarTitleText" : "流水记录", 
@@ -221,6 +228,13 @@
 		    "path" : "pages/tothestore/tothestore",
 		    "style" : {
 		        "navigationBarTitleText" : "自提门店", 
+		        "onReachBottomDistance" : 100
+		    }
+		},
+		{
+		    "path" : "pages/updateOrder/updateOrder",
+		    "style" : {
+		        "navigationBarTitleText" : "确认收货", 
 		        "onReachBottomDistance" : 100
 		    }
 		}

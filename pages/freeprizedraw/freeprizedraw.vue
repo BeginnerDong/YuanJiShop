@@ -11,7 +11,7 @@
 				</view>
 			</view>
 			<view class="start flex flexCenter">
-				<view class="start_box clearfix flex flexCenter" @click="showAlert">
+				<view class="start_box clearfix flex flexCenter" @click="freeDraw">
 					<image style="width: 186rpx;height: 190rpx;position: absolute;" src="../../static/images/home-icon5.png"></image>
 					<view class="start_info">
 						<view class="start_info_begin">参加</view>
@@ -48,10 +48,61 @@
 		data() {
 			return {
 				webself:this,
-				msg:false
+				msg:false,
+				mainData:{}
 			}
 		},
+		
+		onLoad() {
+			const self = this;
+			self.paginate = self.$Utils.cloneForm(self.$AssetsConfig.paginate);
+			var options = self.$Utils.getHashParameters();
+			self.$Utils.loadAll(['getMainData'], self);
+		},
+		
 		methods: {
+			
+			getMainData() {
+				const self = this;
+				const postData = {
+					
+					searchItem: {
+						thirdapp_id: 2,
+						type:5
+					},
+					paginate:self.$Utils.cloneForm(self.paginate)
+				};
+			
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.mainData = res.info.data[0]
+					}
+					console.log('res', res)
+					self.$Utils.finishFunc('getMainData');
+				};
+				self.$apis.productGet(postData, callback);
+			},
+			
+			freeDraw() {
+				const self = this;
+				const postData = {	
+					tokenFuncName:'getProjectToken',
+					data:{
+						product_no:self.mainData.product_no
+					}
+				};			
+				console.log('postData', postData)
+				const callback = (res) => {
+					self.$Utils.showToast(res.msg,'none');
+					console.log('res', res)
+			
+				};
+				self.$apis.freeDraw(postData, callback);
+			},
+			
+			
+			
 			showAlert(){
 				this.msg = true;
 			},
