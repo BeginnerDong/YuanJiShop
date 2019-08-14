@@ -30,19 +30,22 @@
 					<span class="header_menu_name flex">游戏说明</span>
 				</view>	
 			</view>
-		
+			
 			<view class="bearbox clearfix">
-				<view class="bear flex flexCenter" v-if="status=='none'">
-					<view class="bearbox_item flex flexCenter " v-for="item in mainData">
-						<image style="width: 160rpx;height: 188rpx;" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
-						<view class="bearbox_item_info">
-							<span class="bear_item_name">{{item.title}}</span>
-						</view>
-						<view class="bearbox_item_msg">
-							<span class="bear_item_height">{{item.description}}</span>
+				<scroll-view>
+					<view class="bear flex flexCenter" v-if="status=='none'">
+						<view class="bearbox_item flex flexCenter " v-for="item in mainData">
+							<image style="width: 160rpx;height: 188rpx;" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
+							<view class="bearbox_item_info">
+								<span class="bear_item_name">{{item.title}}</span>
+							</view>
+							<view class="bearbox_item_msg">
+								<span class="bear_item_height">{{item.description}}</span>
+							</view>
 						</view>
 					</view>
-				</view>
+				</scroll-view>
+				
 				
 				<view  style="position: relative;width: 100%;height: 100px;" v-if="status!='none'">
 					<view class="anim" style="position: absolute;top: 0;left: 0;width: 33.3%;text-align: center;"  v-for="(item,index) in newData" :key="index">
@@ -193,23 +196,23 @@
 							self.reward = res.info.productInfo;
 						};
 						self.newData.push({
-							url:'http://106.12.155.217/yjsc/public/uploads/2/20190809/ab1094859169c39eb34cbf15071bbb6aid5.png',
+							url:'../../static/images/gift.png',
 						},);
 						self.interval = setTimeout(function(){
 							self.newData.push({
-								url:'http://106.12.155.217/yjsc/public/uploads/2/20190809/ab1094859169c39eb34cbf15071bbb6aid5.png',
+								url:'../../static/images/gift.png',
 							});
 						},950);
 						
 						setTimeout(function(){
 							self.newData.push({
-								url:'http://106.12.155.217/yjsc/public/uploads/2/20190809/ab1094859169c39eb34cbf15071bbb6aid5.png',
+								url:'../../static/images/gift.png',
 							});
 						},1900);
 						
 						setTimeout(function(){
 							self.newData.push({
-								url:'http://106.12.155.217/yjsc/public/uploads/2/20190809/ab1094859169c39eb34cbf15071bbb6aid5.png',
+								url:'../../static/images/gift.png',
 							});
 						},2850);
 						
