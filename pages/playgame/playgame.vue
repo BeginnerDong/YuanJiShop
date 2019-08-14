@@ -2,8 +2,17 @@
 	<view class="container flex">
 		<!-- header部分 -->
 		<view class="header">
-			<view class="header_hook">
-				<image src="../../static/images/home-icon.png" mode=""></image>
+			<view  style="width:15px;margin: 0 auto; transition: all 1s;" :style="'height:'+ropeHeight+'%'">
+				<image style="width: 100%;height: 100%;" src="../../static/images/rope.png" mode=""></image>
+			</view>
+			<view class="header_hook" style="text-align: center;" v-show="hockStatus=='open'" >
+				<image style="width: 75px;height: 46px;" src="../../static/images/hockopen.png" mode=""></image>
+			</view>
+			<view class="header_hook" style="text-align: center;" v-show="hockStatus=='close'&&!web_isReward" >
+				<image style="width: 75px;height: 46px;" src="../../static/images/hockclose.png" mode=""></image>
+			</view>
+			<view class="header_hook" style="text-align: center;" v-show="hockStatus=='close'&&web_isReward" >
+				<image style="width: 160rpx;height: 188rpx;" src="http://106.12.155.217/yjsc/public/uploads/2/20190809/ab1094859169c39eb34cbf15071bbb6aid5.png" mode=""></image>
 			</view>
 			<view class="header_menu">
 				<view class="header_menu_item flex flexCenter" @click="webself.$Router.navigateTo({route:{path:'/pages/freeprizedraw/freeprizedraw'}})">
@@ -21,10 +30,10 @@
 					<span class="header_menu_name flex">游戏说明</span>
 				</view>	
 			</view>
+		
 			<view class="bearbox clearfix">
-				<view class="bear flex flexCenter">
-					
-					<view class="bearbox_item flex flexCenter" v-for="item in mainData">
+				<view class="bear flex flexCenter" v-if="status=='none'">
+					<view class="bearbox_item flex flexCenter " v-for="item in mainData">
 						<image style="width: 160rpx;height: 188rpx;" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
 						<view class="bearbox_item_info">
 							<span class="bear_item_name">{{item.title}}</span>
@@ -32,6 +41,12 @@
 						<view class="bearbox_item_msg">
 							<span class="bear_item_height">{{item.description}}</span>
 						</view>
+					</view>
+				</view>
+				
+				<view  style="position: relative;width: 100%;height: 100px;" v-if="status!='none'">
+					<view class="anim" style="position: absolute;top: 0;left: 0;width: 33.3%;text-align: center;"  v-for="(item,index) in newData" :key="index">
+						<image style="width: 160rpx;height: 188rpx;" :src="item.url"></image>	
 					</view>
 				
 				</view>
@@ -56,9 +71,9 @@
 				<view class="start_box clearfix flex flexCenter">
 					<image style="width: 186rpx;height: 190rpx;position: absolute;" src="../../static/images/home-icon5.png"></image>
 					<view class="start_info" @click="draw">
-						<view class="start_info_begin">开始</view>
+						<view class="start_info_begin">{{status=='ready'?'抓':'开始'}}</view>
 						<view style="width: 100%;height: 16rpx;"></view>
-						<view class="start_info_time">10币/一次</view>
+						<view class="start_info_time">{{status=='ready'?timerCount+'s':'10币/一次'}}</view>
 					</view>
 				</view>
 			</view>
@@ -76,15 +91,26 @@
 			return {
 				webself:this,
 				mainData:[],
-				userData:{}
+				userData:{},
+				status:'none',
+				newData:[],
+				ropeHeight:10,
+				hockStatus:'open',
+				timerCount:5,
+				isReward:false,
+				reward:{},
+				web_isReward:false
 			}
 		},
 		
 		onLoad() {		
 			const self = this;
+			console.log(8888888);
+			
 			self.timestampNow = (new Date()).getTime();
 			var options = self.$Utils.getHashParameters();	
-			self.$Utils.loadAll(['getMainData','tokenGet'], self);			
+			self.$Utils.loadAll(['tokenGet'], self);			
+			//self.$Utils.loadAll(['getMainData'], self);			
 		},
 		
 	
@@ -107,7 +133,8 @@
 						uni.setStorageSync('token_expire_time',1565505988000)
 					}
 					console.log('res', res)
-					self.getUserData()
+					self.getUserData();
+					self.getMainData()
 				};
 				self.$apis.tokenGet(postData, callback);
 			},
@@ -144,31 +171,112 @@
 					}
 					console.log('res', res)
 					self.$Utils.finishFunc('getMainData');
+					self.$Utils.finishFunc('tokenGet');
 				};
 				self.$apis.productGet(postData, callback);
 			},
 			
 			draw() {
 				const self = this;
-				const postData = {	
-					tokenFuncName:'getProjectToken'
-				};			
-				console.log('postData', postData)
-				const callback = (res) => {
-					self.$Utils.showToast(res.msg,'none');
-					console.log('res', res)
-
+				if(self.status=='none'){
+					const postData = {
+						tokenFuncName:'getProjectToken'
+					};			
+					self.timerCount = 5;
+					self.isReward = false;
+					self.web_isReward = false;
+					const callback = (res) => {
+						self.status = 'ready';
+						self.userData.info.balance = res.info.balance;
+						if(res.info.product_no){
+							self.isReward = true;
+							self.reward = res.info.productInfo;
+						};
+						self.newData.push({
+							url:'http://106.12.155.217/yjsc/public/uploads/2/20190809/ab1094859169c39eb34cbf15071bbb6aid5.png',
+						},);
+						self.interval = setTimeout(function(){
+							self.newData.push({
+								url:'http://106.12.155.217/yjsc/public/uploads/2/20190809/ab1094859169c39eb34cbf15071bbb6aid5.png',
+							});
+						},950);
+						
+						setTimeout(function(){
+							self.newData.push({
+								url:'http://106.12.155.217/yjsc/public/uploads/2/20190809/ab1094859169c39eb34cbf15071bbb6aid5.png',
+							});
+						},1900);
+						
+						setTimeout(function(){
+							self.newData.push({
+								url:'http://106.12.155.217/yjsc/public/uploads/2/20190809/ab1094859169c39eb34cbf15071bbb6aid5.png',
+							});
+						},2850);
+						
+						self.timeInterVal =  setInterval(function(){
+							if(self.timerCount>0){
+								self.timerCount--;
+							}else{
+								clearInterval(self.timeInterVal);
+								if(self.status=='ready'){
+									self.go()
+								};
+							};
+						},1000)
+						//self.$Utils.showToast(res.msg,'none');
+						console.log('res', res)
+					};
+					console.log('self.$apis.draw', self.$apis.draw);
+					self.$apis.draw(postData, callback);
+					return;
 				};
-				self.$apis.draw(postData, callback);
+
+				if(self.status=='ready'&&self.timerCount>0){
+					self.go()
+				};
+				
 			},
+			
+			go(){
+				const self = this;
+				self.ropeHeight = 80;
+				self.status = 'go';
+				setTimeout(function(){
+					self.hockStatus = 'close';
+					self.ropeHeight = 10;
+					if(self.isReward){
+						self.web_isReward =true;
+					};
+					setTimeout(function(){
+						if(self.isReward){
+							self.$Utils.showToast('恭喜！你的奖品：' + self.reward.title,'none');
+						}else{
+							self.$Utils.showToast('下次好运','none');
+						};
+						self.hockStatus = 'open';
+						self.status = 'none';
+					},1200)
+				},1200);
+			}
 			
 			
 		},
+		
+		
 	};
 </script>
 
 <style scoped>
 	@import url("../../assets/style/public.css");
+	.anim{
+	
+		animation:aDirection 3.8s linear infinite;
+		-webkit-animation:aDirection 3.8s linear infinite;
+	}
+	@keyframes aDirection {
+	    from {left:0;}
+	    to {left:133%;}
+	}
 	.container{height: 100%;flex-direction: column;}
 	/* header部分 */
 	.header{width: 100%;height:950rpx;position: relative;}

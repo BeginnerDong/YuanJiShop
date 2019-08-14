@@ -18,7 +18,8 @@
 		},
 		onLoad() {
 			const self = this;
-			self.$Utils.loadAll(['tokenGet'], self);
+			console.log(88888)
+			//self.$Utils.loadAll(['tokenGet'], self);
 		},
 		methods: {
 			tokenGet() {
