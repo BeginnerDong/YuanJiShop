@@ -19,7 +19,7 @@ class Token {
     }
 
 	getProjectToken(callback,postData) { 
-		return uni.getStorageSync('user_token');
+		//return uni.getStorageSync('user_token');
 		var pass = true;
 		if(postData&&postData.refreshToken){
 			uni.removeStorageSync('user_token');
@@ -99,7 +99,7 @@ class Token {
 					});
 					return;
 				};
-				window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7db54ed176405e24&redirect_uri='+
+				window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2e32da7f662f003d&redirect_uri='+
 					encodeURIComponent(href)+'&response_type=code&scope=snsapi_userinfo';
 				return;
 			};
@@ -182,7 +182,7 @@ class Token {
 							window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+ param.sub_appid +'&redirect_uri='+
 							encodeURIComponent(href)+'&response_type=code&scope=snsapi_userinfo';
 						}else{
-							window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7db54ed176405e24&redirect_uri='+
+							window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2e32da7f662f003d&redirect_uri='+
 							encodeURIComponent(href)+'&response_type=code&scope=snsapi_userinfo';
 						};
 						
@@ -229,7 +229,7 @@ class Token {
 				window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+ param.sub_appid +'&redirect_uri='+
 				encodeURIComponent(href)+'&response_type=code&scope=snsapi_userinfo';
 			}else{
-				window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7db54ed176405e24&redirect_uri='+
+				window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2e32da7f662f003d&redirect_uri='+
 				encodeURIComponent(href)+'&response_type=code&scope=snsapi_userinfo';
 			};   
 			 

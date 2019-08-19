@@ -43,7 +43,8 @@
 			return {
 				webself:this,
 				mainData:[],
-				userData:{}
+				userData:{},
+				index:''
 			}
 		},
 		
@@ -103,17 +104,18 @@
 			
 			addOrder(index) {
 				const self = this;	
+				self.index = index;
 				var orderList = [];
 				orderList.push({
 					product: [{
-						id: self.mainData[index].id,
+						id: self.mainData[self.index].id,
 						count: 1,	
 					}]
 				})			
 				const postData = {
 					tokenFuncName: 'getProjectToken',
 					orderList: orderList,
-					type: self.mainData[index].type,
+					type: self.mainData[self.index].type,
 				};	
 				const callback = (res) => {
 			
@@ -133,16 +135,26 @@
 			
 			pay(order_id) {
 				const self = this;
-				var price = parseFloat(self.mainData.price);
+				var price = parseFloat(self.mainData[self.index].price);
 				const postData = {};	
 				postData.wxPay = {
-					price: parseFloat(self.mainData.price)
+					price: price
 				};
 				postData.tokenFuncName = 'getProjectToken',
 				postData.searchItem = {
 					id: self.orderId
 				};
-				postData.payAfter = [];
+				postData.payAfter=[{
+					tableName: 'FlowLog',
+					FuncName: 'add',
+					data: {
+						user_no: uni.getStorageSync('user_no'),
+						count: self.mainData[self.index].score,
+						type:2,
+						thirdapp_id:2,
+						trade_info:'充值'
+					}
+				}]
 				const callback = (res) => {
 					if (res.solely_code == 100000) {
 						if (res.info) {
@@ -153,7 +165,7 @@
 										title: '支付成功',
 										duration: 2000,
 										success: function() {
-											
+											self.getUserData()
 										}
 									});
 								} else {
@@ -175,7 +187,7 @@
 					} else {
 						uni.setStorageSync('canClick', true);
 						uni.showToast({
-							title: '支付参数有误',
+							title: res.msg,
 							duration: 2000
 						});
 					};

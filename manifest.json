@@ -66,13 +66,13 @@
         "permission" : {}
     },
     "h5" : {
-        "title" : "本地捕手",
+        "title" : "源集商城",
         "devServer" : {
             "https" : false
         },
         "router" : {
             "base" : "/wx/"
         },
-        "domain" : "https://www.local-scanner.com"
+        "domain" : "https://www.yuanjishangcheng.com"
     }
 }

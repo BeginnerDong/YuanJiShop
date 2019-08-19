@@ -32,7 +32,7 @@
 			</view>
 			
 			<view class="bearbox clearfix">
-				<scroll-view>
+					
 					<view class="bear flex flexCenter" v-if="status=='none'">
 						<view class="bearbox_item flex flexCenter " v-for="item in mainData">
 							<image style="width: 160rpx;height: 188rpx;" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
@@ -44,7 +44,7 @@
 							</view>
 						</view>
 					</view>
-				</scroll-view>
+				
 				
 				
 				<view  style="position: relative;width: 100%;height: 100px;" v-if="status!='none'">
@@ -112,7 +112,7 @@
 			
 			self.timestampNow = (new Date()).getTime();
 			var options = self.$Utils.getHashParameters();	
-			self.$Utils.loadAll(['tokenGet'], self);			
+			self.$Utils.loadAll(['getUserData','getMainData'], self);			
 			//self.$Utils.loadAll(['getMainData'], self);			
 		},
 		
@@ -153,7 +153,7 @@
 						self.userData = res.info.data[0]	
 					}
 					console.log('res', res)
-					self.$Utils.finishFunc('tokenGet');
+					self.$Utils.finishFunc('getUserData');
 				};
 				self.$apis.userGet(postData, callback);
 			},
@@ -174,14 +174,19 @@
 					}
 					console.log('res', res)
 					self.$Utils.finishFunc('getMainData');
-					self.$Utils.finishFunc('tokenGet');
+					
 				};
 				self.$apis.productGet(postData, callback);
 			},
 			
 			draw() {
 				const self = this;
+				
 				if(self.status=='none'){
+					if(parseFloat(self.userData.info.balance)<10){
+						self.$Utils.showToast('您的金币不足','none');
+						return
+					};
 					const postData = {
 						tokenFuncName:'getProjectToken'
 					};			
@@ -190,6 +195,7 @@
 					self.web_isReward = false;
 					const callback = (res) => {
 						self.status = 'ready';
+						
 						self.userData.info.balance = res.info.balance;
 						if(res.info.product_no){
 							self.isReward = true;
