@@ -15,7 +15,7 @@
 				<view class="flex">
 					<image class="login_icon"  src="../../static/images/login-icon2.png"></image>
 				</view>
-				<view><input class="login_txt" type="text" placeholder="请输入您的密码" v-model="submitData.password"></view>
+				<view><input class="login_txt" type="password" placeholder="请输入您的密码" v-model="submitData.password"></view>
 			</view>
 		</view>
 		<view style="width: 100%;height: 186rpx;"></view>

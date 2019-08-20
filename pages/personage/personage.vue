@@ -7,7 +7,7 @@
 					<view class="mine flex">
 						<view class="mine_info flex">
 							<view class="mine_info_logo">
-								<image class="my_icon" src="../../static/images/about-img.png"></image>
+								<image class="my_icon" :src="userData.headImgUrl"></image>
 							</view>
 							<view class="mine_info_name">
 								<view class="my_name"><span>{{userData.nickname}}</span></view>

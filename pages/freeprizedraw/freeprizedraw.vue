@@ -11,10 +11,10 @@
 				</view>
 			</view>
 			<view class="start flex flexCenter">
-				<view class="start_box clearfix flex flexCenter" @click="freeDraw">
-					<image style="width: 186rpx;height: 190rpx;position: absolute;" src="../../static/images/home-icon5.png"></image>
+				<view class="start_box clearfix flex flexCenter" @click="mainData.product_no?'freeDraw':''">
+					<image style="width: 220rpx;height: 220rpx;position: absolute;" src="../../static/images/home-icon5.png"></image>
 					<view class="start_info">
-						<view class="start_info_begin">参加</view>
+						<view class="start_info_begin">{{mainData.product_no?'参加':'未开启'}}</view>
 					</view>
 				</view>
 			</view>
@@ -68,11 +68,14 @@
 					
 					searchItem: {
 						thirdapp_id: 2,
-						type:5
+						type:5,
+						behavior:0
 					},
 					paginate:self.$Utils.cloneForm(self.paginate)
 				};
-			
+				postData.order = {
+					create_time:'asc'
+				}
 				console.log('postData', postData)
 				const callback = (res) => {
 					if (res.info.data.length > 0) {

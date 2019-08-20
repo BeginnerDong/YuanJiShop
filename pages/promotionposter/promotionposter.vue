@@ -35,13 +35,13 @@
 					const self = this;
 					const postData = {};
 					postData.tokenFuncName = 'getProjectToken';
-					postData.param = 'http://106.12.155.217/yjsc/wx/?parent_no=' + uni.getStorageSync(
-							'user_no') + '#/pages/index/index',
+					postData.param = 'http://www.yuanjishangcheng.com/wx/?parent_no=' + uni.getStorageSync(
+							'user_no') + '#/pages/playgame/playgame',
 					postData.ext = 'png';
 					if(self.level&&self.level=='shop'){
 						postData.tokenFuncName = 'getShopToken';
-						postData.param = 'http://106.12.155.217/yjsc/wx/?parent_no=' + uni.getStorageSync(
-								'shopNo') + '#/pages/index/index',
+						postData.param = 'http://www.yuanjishangcheng.com/wx/?parent_no=' + uni.getStorageSync(
+								'shopNo') + '#/pages/playgame/playgame',
 						postData.ext = 'png';
 					}
 					const callback = (res) => {

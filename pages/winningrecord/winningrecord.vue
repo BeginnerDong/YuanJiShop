@@ -90,10 +90,10 @@
 			
 		},
 		
-		/* onShow() {
+		onShow() {
 			const self = this;
 			self.$Utils.loadAll(['getMainData'], self);
-		}, */
+		},
 
 		onReachBottom() {
 			console.log('onReachBottom')

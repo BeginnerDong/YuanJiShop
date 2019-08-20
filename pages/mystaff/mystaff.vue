@@ -218,7 +218,16 @@
 					const callback = (res) => {
 						if (res.solely_code==100000) {
 							self.closeAlert();
+							self.submitData = {
+								login_name:'',
+								password:'',
+								name:'',
+								phone:'',
+								behavior:2
+							};
 							self.getMainData(true)
+						}else{
+							self.$Utils.showToast(res.msg,'none')
 						}
 					};
 					self.$apis.addAcount(postData, callback);
@@ -251,7 +260,7 @@
 						status:-1
 					},
 					searchItem:{
-						user_no:self.mainData[self.deleteIndex].user_no
+						user_no:self.mainData[self.deleteIndex].child_no
 					}
 				};
 				console.log('postData', postData)

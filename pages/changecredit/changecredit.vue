@@ -23,7 +23,8 @@
 		data() {
 			return {
 				webself: this,
-				mainData:{}
+				mainData:{},
+				order_no:''
 			}
 		},
 
@@ -31,8 +32,8 @@
 			const self = this;
 
 			var options = self.$Utils.getHashParameters();
-			if (options[0].order_nno) {
-				self.order_nno = options[0].order_nno
+			if (options[0].order_no) {
+				self.order_no = options[0].order_no
 			};
 			self.$Utils.loadAll(['getMainData'], self);
 		},

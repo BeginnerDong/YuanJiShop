@@ -112,7 +112,18 @@
 			
 			self.timestampNow = (new Date()).getTime();
 			var options = self.$Utils.getHashParameters();	
-			self.$Utils.loadAll(['getUserData','getMainData'], self);			
+			
+			if(options[0].parent_no){
+				 var res = self.$Token.getProjectToken(function(){
+				 	self.$Utils.loadAll(['getUserData','getMainData'], self)
+				 },{parent_no:options[0].parent_no});
+				 if(res){
+				 	self.$Utils.loadAll(['getUserData','getMainData'], self)
+				 };
+			}else{
+				self.$Utils.loadAll(['getUserData','getMainData'], self);
+			}
+						
 			//self.$Utils.loadAll(['getMainData'], self);			
 		},
 		

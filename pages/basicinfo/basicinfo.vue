@@ -9,7 +9,7 @@
 				</view>
 				<view class="container_box_item flex">
 					<view class="container_box_item_tit">密码 : </view>
-					<view class="container_box_item_acount">{{userData.password}}</view>
+					<view class="container_box_item_acount">******</view>
 				</view>
 			</view>
 		</view>
