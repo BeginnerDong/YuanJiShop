@@ -11,10 +11,22 @@
 				</view>
 			</view>
 			<view class="start flex flexCenter">
-				<view class="start_box clearfix flex flexCenter" @click="mainData.product_no?'freeDraw':''">
+				<view class="start_box clearfix flex flexCenter" v-if="noProduct">
 					<image style="width: 220rpx;height: 220rpx;position: absolute;" src="../../static/images/home-icon5.png"></image>
 					<view class="start_info">
-						<view class="start_info_begin">{{mainData.product_no?'参加':'未开启'}}</view>
+						<view class="start_info_begin">未开启</view>
+					</view>
+				</view>
+				<view class="start_box clearfix flex flexCenter" v-if="!noProduct&&!hasOne"  @click="freeDraw">
+					<image style="width: 220rpx;height: 220rpx;position: absolute;" src="../../static/images/home-icon5.png"></image>
+					<view class="start_info">
+						<view class="start_info_begin">参加</view>
+					</view>
+				</view>
+				<view class="start_box clearfix flex flexCenter" v-if="!noProduct&&hasOne">
+					<image style="width: 220rpx;height: 220rpx;position: absolute;" src="../../static/images/home-icon5.png"></image>
+					<view class="start_info">
+						<view class="start_info_begin">已参加</view>
 					</view>
 				</view>
 			</view>
@@ -49,7 +61,9 @@
 			return {
 				webself:this,
 				msg:false,
-				mainData:{}
+				mainData:{},
+				noProduct:true,
+				hasOne:false
 			}
 		},
 		
@@ -64,8 +78,7 @@
 			
 			getMainData() {
 				const self = this;
-				const postData = {
-					
+				const postData = {				
 					searchItem: {
 						thirdapp_id: 2,
 						type:5,
@@ -76,11 +89,27 @@
 				postData.order = {
 					create_time:'asc'
 				}
+				postData.getAfter = {
+					order: {	
+						token:uni.getStorageSync('user_token'),
+						tableName: 'Order',
+						searchItem: {
+							status: 1
+						},
+						middleKey: 'product_no',
+						key: 'standard',
+						condition: 'in',
+					},
+				};
 				console.log('postData', postData)
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
-						self.mainData = res.info.data[0]
-					}
+						self.mainData = res.info.data[0];
+						self.noProduct = false;
+						if(res.info.data[0].order.length>0){
+							self.hasOne = true
+						};
+					};
 					console.log('res', res)
 					self.$Utils.finishFunc('getMainData');
 				};
@@ -99,7 +128,10 @@
 				const callback = (res) => {
 					self.$Utils.showToast(res.msg,'none');
 					console.log('res', res)
-			
+					setTimeout(function() {
+						self.getMainData()
+					}, 1000);
+					
 				};
 				self.$apis.freeDraw(postData, callback);
 			},
