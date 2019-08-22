@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" style="padding-bottom: 60rpx;">
 		<view class="content ql-editor" v-html="mainData.content">
 		</view>
 	</view>
@@ -62,6 +62,9 @@
 
 <style scoped>
 	@import url("../../assets/style/public.css");
+	.container .ql-editor{padding: 30rpx 4%; line-height: 48rpx; color: #333;}
+	.container .ql-editor p{ padding-bottom: 20rpx!important;}
+	.container .ql-editor image{width: 100%; display: block; margin: 20rpx auto;}
 	.header{position: relative;}
 	.header_img{width: 100%;height: 900rpx;}
 	.header_txt{}
