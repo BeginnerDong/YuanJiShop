@@ -85,7 +85,11 @@
 					const callback = (res) => {
 						if (res.solely_code == 100000) {
 							self.$Utils.showToast('保存成功', 'none');
-
+							setTimeout(function() {
+								uni.navigateBack({
+									delta:1
+								})
+							}, 1000);
 						} else {
 							self.$Utils.showToast(res.msg, 'none')
 						}

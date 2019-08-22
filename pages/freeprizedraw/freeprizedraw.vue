@@ -109,7 +109,9 @@
 						if(res.info.data[0].order.length>0){
 							self.hasOne = true
 						};
-					};
+					}else{
+						self.noProduct = true;
+					}
 					console.log('res', res)
 					self.$Utils.finishFunc('getMainData');
 				};
@@ -129,7 +131,9 @@
 					self.$Utils.showToast(res.msg,'none');
 					console.log('res', res)
 					setTimeout(function() {
-						self.getMainData()
+						uni.navigateBack({
+							delta:1
+						})
 					}, 1000);
 					
 				};

@@ -115,18 +115,22 @@
 			
 			if(options[0].parent_no){
 				 var res = self.$Token.getProjectToken(function(){
-				 	self.$Utils.loadAll(['getUserData','getMainData'], self)
+				 	self.$Utils.loadAll(['getMainData'], self)
 				 },{parent_no:options[0].parent_no});
 				 if(res){
-				 	self.$Utils.loadAll(['getUserData','getMainData'], self)
+				 	self.$Utils.loadAll(['getMainData'], self)
 				 };
 			}else{
-				self.$Utils.loadAll(['getUserData','getMainData'], self);
+				self.$Utils.loadAll(['getMainData'], self);
 			}
 						
 			//self.$Utils.loadAll(['getMainData'], self);			
 		},
 		
+		/* onShow() {
+			const self = this;
+			self.getUserData()
+		}, */
 	
 		
 		methods: {
@@ -164,7 +168,7 @@
 						self.userData = res.info.data[0]	
 					}
 					console.log('res', res)
-					self.$Utils.finishFunc('getUserData');
+				
 				};
 				self.$apis.userGet(postData, callback);
 			},

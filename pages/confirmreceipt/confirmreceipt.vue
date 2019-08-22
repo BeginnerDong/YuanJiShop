@@ -269,7 +269,11 @@
 										title: '支付成功',
 										duration: 2000,
 										success: function() {
-
+											setTimeout(function() {
+												uni.navigateBack({
+													delta:1
+												})
+											}, 1000);
 										}
 									});
 								} else {
@@ -287,6 +291,11 @@
 								title: '支付成功',
 								duration: 2000
 							});
+							setTimeout(function() {
+								uni.navigateBack({
+									delta:1
+								})
+							}, 1000);
 						};
 					} else {
 						uni.setStorageSync('canClick', true);
