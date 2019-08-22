@@ -131,10 +131,10 @@
 			//self.$Utils.loadAll(['getMainData'], self);			
 		},
 
-		/* onShow() {
+		onShow() {
 			const self = this;
 			self.getUserData()
-		}, */
+		},
 
 
 		methods: {
