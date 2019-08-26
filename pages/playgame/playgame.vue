@@ -35,8 +35,13 @@
 			
 
 			<view class="bearbox clearfix" >
-					<view class="bear flex flexCenter" v-if="status=='none'">
-						<view class="bearbox_item flex flexCenter" v-for="item in mainData">
+				<scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" >
+                   <!-- <view id="demo1" class="scroll-view-item_H uni-bg-red">A</view>
+                    <view id="demo2" class="scroll-view-item_H uni-bg-green">B</view>
+                    <view id="demo3" class="scroll-view-item_H uni-bg-blue">C</view>
+                </scroll-view> -->
+					<view class="bear flex" v-if="status=='none'">
+						<view class="bearbox_item flex scroll-view-item_H" v-for="item in mainData" >
 							<image style="width: 160rpx;height: 188rpx;" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
 							<view class="bear-cont">
 								<view class="item_name overflow1">{{item.title}}</view>
@@ -50,6 +55,7 @@
 							</view> -->
 						</view>
 					</view>
+				</scroll-view>
 
 					<view style="position: relative;width: 100%;height: 100px;" v-if="status!='none'">
 						<view class="anim" style="position: absolute;top: 0;left: 0;width: 33.3%;text-align: center;" v-for="(item,index) in newData" :key="index">
@@ -300,6 +306,7 @@
 <style scoped>
 	@import url("../../assets/style/public.css");
 
+	.scroll-view-item_H{ display: inline-block;}
 	.anim {
 
 		animation: aDirection 3.8s linear infinite;
@@ -381,14 +388,16 @@
 
 	.bear {
 		align-items: flex-end;
-		padding-bottom: 44rpx;
+		white-space: nowrap;
+		padding: 0 30rpx 44rpx 30rpx;
+		display: inline-block;
 	}
 
 	.bearbox_item {
 		text-align: center;
 		flex: 1;
 		position: relative;
-		margin: 0 6rpx;
+		margin: 0 10rpx;
 	}
 
 	.header_menu {
