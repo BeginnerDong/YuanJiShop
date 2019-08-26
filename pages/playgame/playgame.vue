@@ -77,8 +77,11 @@
 				<view class="start_box clearfix flex flexCenter">
 					<image style="width: 186rpx;height: 190rpx;position: absolute;" src="../../static/images/home-icon5.png"></image>
 					<view class="start_info" @click="draw">
-						<view class="start_info_begin" style="font-family:'剪纸简体'">{{status=='ready'?'抓':'开始'}}</view>
-						<view style="width: 100%;height: 16rpx;"></view>
+						<view class="start_info_begin" style="font-family:'剪纸简体'">
+						<!-- {{status=='ready'?'抓':'开始'}} -->
+						<image :src="status=='ready'?'../../static/images/star2.png':'../../static/images/star1.png' " style="width: 110rpx; height:53rpx; margin: 0 auto;" ></image>
+						</view>
+						<view style="width: 100%;height: 8rpx;"></view>
 						<view class="start_info_time">{{status=='ready'?timerCount+'s':'10币/一次'}}</view>
 					</view>
 				</view>
