@@ -234,8 +234,7 @@
 			},
 			
 			confirmDelete(type){
-				const self = this;
-				
+				const self = this;				
 				if(type=='confirm'){
 					self.deleteAcount()
 				}else if(type=='cancel'){
@@ -252,7 +251,17 @@
 					},
 					searchItem:{
 						user_no:self.mainData[self.deleteIndex].user_no
-					}
+					},
+					saveAfter:[{
+						tableName: 'Distribution',
+						FuncName: 'update',
+						data: {
+							status:-1
+						},
+						searchItem:{
+							id:self.mainData[self.deleteIndex].id
+						}
+					}]
 				};
 				console.log('postData', postData)
 				const callback = (res) => {
@@ -263,7 +272,7 @@
 						self.$Utils.showToast(res.msg,'none')
 					}
 				};
-				self.$apis.userUpdate(postData, callback);	
+				self.$apis.userUpdateCom(postData, callback);	
 			},
 			
 			

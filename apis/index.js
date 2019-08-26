@@ -199,6 +199,18 @@ export default {
 		};
 		http.HTTP(allParams);
 	},
+	
+	userUpdateCom(param, callback) {
+		var allParams = {
+			url: 'Common/User/update',
+			type: 'post',
+			data: param,
+			sCallback: function(data) {
+				callback && callback(data);
+			}
+		};
+		http.HTTP(allParams);
+	},
 
 	userInfoGet(param, callback) {
 		var allParams = {

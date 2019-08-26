@@ -261,8 +261,19 @@
 					},
 					searchItem:{
 						user_no:self.mainData[self.deleteIndex].child_no
-					}
+					},
+					saveAfter:[{
+						tableName: 'Distribution',
+						FuncName: 'update',
+						data: {
+							status:-1
+						},
+						searchItem:{
+							id:self.mainData[self.deleteIndex].id
+						}
+					}]
 				};
+				
 				console.log('postData', postData)
 				const callback = (res) => {
 					if (res.solely_code==100000) {
@@ -272,7 +283,7 @@
 						self.$Utils.showToast(res.msg,'none')
 					}
 				};
-				self.$apis.userUpdate(postData, callback);	
+				self.$apis.userUpdateCom(postData, callback);	
 			},
 			
 			

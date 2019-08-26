@@ -7,7 +7,7 @@
 			</view>
 			<view class="giftbox flex flexCenter">
 				<view class="gift">
-					<image class="luky_gift" src="../../static/images/lucky-img1.png"></image>
+					<image class="luky_gift" :src="mainData.mainImg&&mainData.mainImg[0]?mainData.mainImg[0].url:''"></image>
 				</view>
 			</view>
 			<view class="start flex flexCenter">

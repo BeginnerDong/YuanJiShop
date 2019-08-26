@@ -165,7 +165,7 @@
 										title: '支付成功',
 										duration: 2000,
 										success: function() {
-											self.getUserData()
+											self.$Router.redirectTo({route:{path:'/pages/index/index'}})
 										}
 									});
 								} else {
