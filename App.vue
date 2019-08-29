@@ -15,4 +15,16 @@
 
 <style>
 	@import "/assets/style/style.css";
+	body, html {
+		-webkit-user-select: none;
+		user-select: none;
+		width: 100%;
+		height:auto;
+	}
+	.ql-editor img{
+		max-width: 100%;
+		min-width: 50%;
+		display: block;
+		padding: 10px 0;
+	}
 </style>
