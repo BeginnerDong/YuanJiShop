@@ -3,19 +3,22 @@
 		<!-- header部分 -->
 		<view class="header">
 			<view class='springBj'></view>
-			<view  style="width:15px;margin: 0 auto; transition: all 1s;" :style="'height:'+ropeHeight+'%'">
-				<image style="width: 100%;height: 100%;" src="../../static/images/rope.png" mode=""></image>
+			<view style="position: absolute;top: 0;width:100%;height: 100%;z-index:999">
+				<view  style="width:15px;margin: 0 auto; transition: all 1s;" :style="'height:'+ropeHeight+'%'">
+					<image style="width: 100%;height: 100%;" src="../../static/images/rope.png" mode=""></image>
+				</view>
+				<view class="header_hook" style="text-align: center;" v-show="hockStatus=='open'" >
+					<image style="width: 75px;height: 46px;" src="../../static/images/hockopen.png" mode=""></image>
+				</view>
+				<view class="header_hook" style="text-align: center;" v-show="hockStatus=='close'&&!web_isReward" >
+					<image style="width: 75px;height: 46px;" src="../../static/images/hockclose.png" mode=""></image>
+				</view>
+				<view class="header_hook" style="text-align: center;" v-show="hockStatus=='close'&&web_isReward">
+					<image style="width: 160rpx;height: 188rpx;" src="http://106.12.155.217/yjsc/public/uploads/2/20190809/ab1094859169c39eb34cbf15071bbb6aid5.png"
+					 mode=""></image>
+				</view>
 			</view>
-			<view class="header_hook" style="text-align: center;" v-show="hockStatus=='open'" >
-				<image style="width: 75px;height: 46px;" src="../../static/images/hockopen.png" mode=""></image>
-			</view>
-			<view class="header_hook" style="text-align: center;" v-show="hockStatus=='close'&&!web_isReward" >
-				<image style="width: 75px;height: 46px;" src="../../static/images/hockclose.png" mode=""></image>
-			</view>
-			<view class="header_hook" style="text-align: center;" v-show="hockStatus=='close'&&web_isReward">
-				<image style="width: 160rpx;height: 188rpx;" src="http://106.12.155.217/yjsc/public/uploads/2/20190809/ab1094859169c39eb34cbf15071bbb6aid5.png"
-				 mode=""></image>
-			</view>
+			
 			<view class="header_menu">
 				<view class="header_menu_item flex flexCenter" @click="webself.$Router.navigateTo({route:{path:'/pages/freeprizedraw/freeprizedraw'}})">
 					<image class="header_menu_img" src="../../static/images/home-icon3.png"></image>
@@ -35,11 +38,11 @@
 			
 
 			<view class="bearbox clearfix" >
-				<scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" >
-                   <!-- <view id="demo1" class="scroll-view-item_H uni-bg-red">A</view>
+				<!-- <scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" >
+                   <view id="demo1" class="scroll-view-item_H uni-bg-red">A</view>
                     <view id="demo2" class="scroll-view-item_H uni-bg-green">B</view>
                     <view id="demo3" class="scroll-view-item_H uni-bg-blue">C</view>
-                </scroll-view> -->
+                </scroll-view>
 					<view class="bear flex" v-if="status=='none'">
 						<view class="bearbox_item flex scroll-view-item_H" v-for="item in mainData" >
 							<image style="width: 160rpx;height: 188rpx;" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
@@ -47,19 +50,21 @@
 								<view class="item_name overflow1">{{item.title}}</view>
 								<view class="item_msg">{{item.description}}</view>
 							</view>
-							<!-- <view class="bearbox_item_info">
+							<view class="bearbox_item_info">
 								<span class="bear_item_name">{{item.title}}</span>
 							</view>
 							<view class="bearbox_item_msg">
 								<span class="bear_item_height">{{item.description}}</span>
-							</view> -->
+							</view>
 						</view>
 					</view>
-				</scroll-view>
+				</scroll-view> -->
 
-					<view style="position: relative;width: 100%;height: 100px;" v-if="status!='none'">
-						<view class="anim" style="position: absolute;top: 0;left: 0;width: 33.3%;text-align: center;" v-for="(item,index) in newData" :key="index">
-							<image style="width: 160rpx;height: 188rpx;" :src="item.url"></image>
+					<view style="position: relative;width: 100%;height: 150px;" >
+						<view class="anim" style="position: absolute;top: 0;left: 0;width: 33.3%;text-align: center;" v-for="(item,index) in mainData" :key="index">
+							<image style="width: 160rpx;height: 188rpx;" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
+							<view class="item_name overflow1">{{item.title}}</view>
+							<view class="item_msg">{{item.description}}</view>
 						</view>
 					</view>
 			</view>
@@ -198,7 +203,36 @@
 				console.log('postData', postData)
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
-						self.mainData.push.apply(self.mainData, res.info.data)
+						if(res.info.data.length>3){
+							var scrollCount = res.info.data.length - 3;
+						}else{
+							var scrollCount = 0;
+						}
+						
+						const runkeyframes = "@keyframes aDirection {from {left: 0;}to {left: " + (scrollCount*33.3+100) + "%;}} .anim {animation: aDirection "+ (scrollCount*0.93+2.8) +"s linear infinite;-webkit-animation: aDirection "+ (scrollCount*0.93+2.8)+"s linear infinite;}";
+						console.log('runkeyframes',runkeyframes)
+						// 创建style标签
+						const style = document.createElement('style');
+						// 设置style属性
+						style.type = 'text/css';
+						// 将 keyframes样式写入style内
+						style.innerHTML = runkeyframes;
+						// 将style样式存放到head标签
+						console.log('document',document)
+						document.getElementsByTagName('head')[0].appendChild(style);
+						
+						
+						self.mainData.push(res.info.data[0]);
+						//self.mainData.push.apply(self.mainData, res.info.data);
+						for (var i = 1; i < res.info.data.length; i++) {
+							(function(i){
+								setTimeout(function() {
+									console.log('i',i)
+									self.mainData.push(res.info.data[i]);
+									console.log('self.mainData',self.mainData)
+								}, i*950);
+							})(i)	
+						};	
 					}
 					console.log('res', res)
 					self.$Utils.finishFunc('getMainData');
@@ -276,11 +310,11 @@
 
 			go() {
 				const self = this;
-				self.ropeHeight = 80;
+				self.ropeHeight = 70;
 				self.status = 'go';
 				setTimeout(function() {
 					self.hockStatus = 'close';
-					self.ropeHeight = 10;
+					self.ropeHeight = 20;
 					if (self.isReward) {
 						self.web_isReward = true;
 					};
@@ -304,24 +338,13 @@
 </script>
 
 <style scoped>
+	
 	@import url("../../assets/style/public.css");
 
 	.scroll-view-item_H{ display: inline-block;}
-	.anim {
+	
 
-		animation: aDirection 3.8s linear infinite;
-		-webkit-animation: aDirection 3.8s linear infinite;
-	}
-
-	@keyframes aDirection {
-		from {
-			left: 0;
-		}
-
-		to {
-			left: 133%;
-		}
-	}
+	
 	.springBj{ width: 100%; height: 20%; position: absolute; top:0rpx;left: 0;background: url(../../static/images/springBj.png) no-repeat center 0/100% 100%;}
 	
 
@@ -371,6 +394,7 @@
 	.header_hook {
 		width: 100%;
 		height: 250rpx;
+		z-index: 999999999;
 	}
 
 	.header_hook>image {
@@ -531,5 +555,6 @@
 		font-size: 26rpx;
 		color: #FF556B;
 		line-height: 26rpx;
+		margin: 0 auto;
 	}
 </style>

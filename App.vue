@@ -19,7 +19,7 @@
 		-webkit-user-select: none;
 		user-select: none;
 		width: 100%;
-		height:auto;
+		min-height: 100%;
 	}
 	.ql-editor img{
 		max-width: 100%;

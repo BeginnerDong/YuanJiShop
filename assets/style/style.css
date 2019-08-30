@@ -16,8 +16,8 @@ body {
     font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif,"宋体"; 
     color: #000;
     font-size: 14px;
-	page{background:linear-gradient(180deg,#ffdde1,#ffafbd);}
-	height: auto;
+	
+	min-height:100%;
     overflow-x: hidden !important;
     position: relative;
     font-weight:normal;
@@ -26,6 +26,8 @@ body {
 	-ms-user-select:auto;
 	user-select:auto;
 }
+
+page{background:linear-gradient(180deg,#ffdde1,#ffafbd);}
 
 h1,h2,h3,h4,h5,h6,p,ul { 
     margin: 0;

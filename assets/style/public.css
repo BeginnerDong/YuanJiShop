@@ -7,7 +7,7 @@ html {
     font-weight:normal;
 }
 body {
-	height: auto;
+	min-height:100%;
 }
 
 
