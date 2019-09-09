@@ -71,7 +71,7 @@
 					<view class="anim" style="position: absolute;top: 0;left: 0;width: 33.3%;text-align: center;" v-for="(item,index) in mainData"
 					 :key="index">
 						<image style="width: 160rpx;height: 188rpx;" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
-						<view class="item_name overflow1">{{item.title}}</view>
+						<view class="item_name overflow1">{{item.title}}{{index}}</view>
 						<view class="item_msg">{{item.description}}</view>
 					</view>
 				</view>
@@ -129,7 +129,9 @@
 				isReward: false,
 				reward: {},
 				web_isReward: false,
-				play: false
+				play: false,
+				startTime:0,
+				totalLength:0
 			}
 		},
 
@@ -140,7 +142,7 @@
 			self.timestampNow = (new Date()).getTime();
 			var options = self.$Utils.getHashParameters();
 
-			if (options[0].parent_no) {
+			/* if (options[0].parent_no) {
 				var res = self.$Token.getProjectToken(function() {
 					self.$Utils.loadAll(['getMainData', 'getLabelData'], self)
 				}, {
@@ -151,9 +153,9 @@
 				};
 			} else {
 				self.$Utils.loadAll(['getMainData', 'getLabelData'], self);
-			}
+			} */
 
-			//self.$Utils.loadAll(['getMainData'], self);			
+			self.$Utils.loadAll(['getMainData','tokenGet'], self);				
 		},
 
 		onShow() {
@@ -260,16 +262,17 @@
 
 				console.log('postData', postData)
 				const callback = (res) => {
+					self.totalLength = res.info.data.length;
 					if (res.info.data.length > 0) {
-						if (res.info.data.length > 3) {
-							var scrollCount = res.info.data.length - 3;
+						if (res.info.data.length > 4) {
+							var scrollCount = res.info.data.length - 4;
 						} else {
 							var scrollCount = 0;
 						}
 
-						const runkeyframes = "@keyframes aDirection {from {left: 0;}to {left: " + (scrollCount * 33.3 + 100) +
-							"%;}} .anim {animation: aDirection " + (scrollCount * 0.93 + 2.8) +
-							"s linear infinite;-webkit-animation: aDirection " + (scrollCount * 0.93 + 2.8) + "s linear infinite;}";
+						const runkeyframes = "@keyframes aDirection {from {left: 0;}to {left: " + (scrollCount * 25 + 100) +
+							"%;}} .anim {animation: aDirection " + (scrollCount * 0.7 + 2.8) +
+							"s linear infinite;-webkit-animation: aDirection " + (scrollCount * 0.7 + 2.8) + "s linear infinite;}";
 						console.log('runkeyframes', runkeyframes)
 						// 创建style标签
 						const style = document.createElement('style');
@@ -281,8 +284,8 @@
 						console.log('document', document)
 						document.getElementsByTagName('head')[0].appendChild(style);
 
-
 						self.mainData.push(res.info.data[0]);
+						self.startTime = (new Date()).getTime();
 						//self.mainData.push.apply(self.mainData, res.info.data);
 						for (var i = 1; i < res.info.data.length; i++) {
 							(function(i) {
@@ -290,13 +293,12 @@
 									console.log('i', i)
 									self.mainData.push(res.info.data[i]);
 									console.log('self.mainData', self.mainData)
-								}, i * 950);
+								}, i * 700);
 							})(i)
 						};
 					}
 					console.log('res', res)
 					self.$Utils.finishFunc('getMainData');
-
 				};
 				self.$apis.productGet(postData, callback);
 			},
@@ -309,6 +311,25 @@
 						self.$Utils.showToast('您的金币不足', 'none');
 						return
 					};
+					var oneTimeTime = self.totalLength * 700;
+					var gapTime = (new Date()).getTime() + 1200 - self.startTime;
+					console.log('oneTimeTime',oneTimeTime)
+					if(gapTime>oneTimeTime){
+						console.log('nb',((gapTime%oneTimeTime)/700).toFixed(2))
+						var index =  Math.round(((gapTime%oneTimeTime)/700).toFixed(2));
+					}else{
+						console.log('(gapTime/700).toFixed(2)',(gapTime/700).toFixed(2))
+						var index =  Math.round((gapTime/700).toFixed(2));
+					};
+					
+					if(index>1){
+						index = index - 1;
+					}else{
+						index = self.totalLength - 1;
+					};
+
+					console.log('gapTime',gapTime);
+					console.log('index',index);
 					const postData = {
 						tokenFuncName: 'getProjectToken'
 					};
@@ -330,7 +351,7 @@
 							self.newData.push({
 								url: '../../static/images/gift.png',
 							});
-						}, 950);
+						}, 700);
 
 						setTimeout(function() {
 							self.newData.push({
@@ -344,7 +365,7 @@
 							});
 						}, 2850);
 
-						self.timeInterVal = setInterval(function() {
+						/* self.timeInterVal = setInterval(function() {
 							if (self.timerCount > 0) {
 								self.timerCount--;
 							} else {
@@ -353,11 +374,12 @@
 									self.go()
 								};
 							};
-						}, 1000)
+						}, 1000) */
 						//self.$Utils.showToast(res.msg,'none');
 						console.log('res', res)
 					};
 					console.log('self.$apis.draw', self.$apis.draw);
+					self.go()
 					self.$apis.draw(postData, callback);
 					return;
 				};
