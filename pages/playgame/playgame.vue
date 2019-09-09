@@ -4,13 +4,13 @@
 		<view class="header">
 			<view class='springBj'></view>
 			<view style="position: absolute;top: 0;width:100%;height: 100%;z-index:999">
-				<view  style="width:15px;margin: 0 auto; transition: all 1s;" :style="'height:'+ropeHeight+'%'">
+				<view style="width:15px;margin: 0 auto; transition: all 1s;" :style="'height:'+ropeHeight+'%'">
 					<image style="width: 100%;height: 100%;" src="../../static/images/rope.png" mode=""></image>
 				</view>
-				<view class="header_hook" style="text-align: center;" v-show="hockStatus=='open'" >
+				<view class="header_hook" style="text-align: center;" v-show="hockStatus=='open'">
 					<image style="width: 75px;height: 46px;" src="../../static/images/hockopen.png" mode=""></image>
 				</view>
-				<view class="header_hook" style="text-align: center;" v-show="hockStatus=='close'&&!web_isReward" >
+				<view class="header_hook" style="text-align: center;" v-show="hockStatus=='close'&&!web_isReward">
 					<image style="width: 75px;height: 46px;" src="../../static/images/hockclose.png" mode=""></image>
 				</view>
 				<view class="header_hook" style="text-align: center;" v-show="hockStatus=='close'&&web_isReward">
@@ -18,7 +18,7 @@
 					 mode=""></image>
 				</view>
 			</view>
-			
+
 			<view class="header_menu">
 				<view class="header_menu_item flex flexCenter" @click="webself.$Router.navigateTo({route:{path:'/pages/freeprizedraw/freeprizedraw'}})">
 					<image class="header_menu_img" src="../../static/images/home-icon3.png"></image>
@@ -29,15 +29,22 @@
 					<image class="header_menu_img" src="../../static/images/home-icon2.png"></image>
 					<span class="header_menu_name flex">个人中心</span>
 				</view>
+
+			</view>
+			<view class="header_menu" style="left: 2%;">
+				<view class="header_menu_item flex flexCenter" @click="webself.$Router.navigateTo({route:{path:'/pages/productsexchange/productsexchange'}})">
+					<image class="header_menu_img" src="../../static/images/home-icon7.png"></image>
+					<span class="header_menu_name flex">兑换商城</span>
+				</view>
+
 				<view style="width: 100%;height:40rpx;"></view>
 				<view class="header_menu_item flex flexCenter" @click="webself.$Router.navigateTo({route:{path:'/pages/gamedescription/gamedescription'}})">
 					<image class="header_menu_img" src="../../static/images/home-icon1.png"></image>
 					<span class="header_menu_name flex">游戏说明</span>
 				</view>
 			</view>
-			
 
-			<view class="bearbox clearfix" >
+			<view class="bearbox clearfix">
 				<!-- <scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" >
                    <view id="demo1" class="scroll-view-item_H uni-bg-red">A</view>
                     <view id="demo2" class="scroll-view-item_H uni-bg-green">B</view>
@@ -60,17 +67,18 @@
 					</view>
 				</scroll-view> -->
 
-					<view style="position: relative;width: 100%;height: 150px;" >
-						<view class="anim" style="position: absolute;top: 0;left: 0;width: 33.3%;text-align: center;" v-for="(item,index) in mainData" :key="index">
-							<image style="width: 160rpx;height: 188rpx;" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
-							<view class="item_name overflow1">{{item.title}}</view>
-							<view class="item_msg">{{item.description}}</view>
-						</view>
+				<view style="position: relative;width: 100%;height: 150px;">
+					<view class="anim" style="position: absolute;top: 0;left: 0;width: 33.3%;text-align: center;" v-for="(item,index) in mainData"
+					 :key="index">
+						<image style="width: 160rpx;height: 188rpx;" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
+						<view class="item_name overflow1">{{item.title}}</view>
+						<view class="item_msg">{{item.description}}</view>
 					</view>
+				</view>
 			</view>
 		</view>
 		<!-- footer部分 -->
-		<view class="footer flex">
+		<view class="footer flex" style="position: relative;">
 			<view class="recharge">
 				<view style="width: 100%;height: 30rpx;"></view>
 				<view class="recharge_box flex">
@@ -78,7 +86,7 @@
 						<image class="recharge_logo" src="../../static/images/home-icon4.png"></image>
 						<span class="recharge_txt">{{userData.info?userData.info.balance:''}}</span>
 					</view>
-					<view class="recharge_msg flex"  @click="webself.$Router.navigateTo({route:{path:'/pages/pay/pay'}})">
+					<view class="recharge_msg flex" @click="webself.$Router.navigateTo({route:{path:'/pages/pay/pay'}})">
 						<span class="recharge_btn">充值</span>
 						<image src="../../static/images/home-icon6.png" mode=""></image>
 					</view>
@@ -89,14 +97,16 @@
 					<image style="width: 186rpx;height: 190rpx;position: absolute;" src="../../static/images/home-icon5.png"></image>
 					<view class="start_info" @click="draw">
 						<view class="start_info_begin" style="font-family:'剪纸简体'">
-						<!-- {{status=='ready'?'抓':'开始'}} -->
-						<image :src="status=='ready'?'../../static/images/star2.png':'../../static/images/star1.png' " style="width: 110rpx; height:53rpx; margin: 0 auto;" ></image>
+							<!-- {{status=='ready'?'抓':'开始'}} -->
+							<image :src="status=='ready'?'../../static/images/star2.png':'../../static/images/star1.png' " style="width: 110rpx; height:53rpx; margin: 0 auto;"></image>
 						</view>
 						<view style="width: 100%;height: 8rpx;"></view>
 						<view class="start_info_time">{{status=='ready'?timerCount+'s':'10币/一次'}}</view>
 					</view>
 				</view>
 			</view>
+			<image @click="radioClick()" :src="play?'../../static/images/musicOn.png':'../../static/images/musicPause.png'"
+			 style="position: absolute;bottom: 20rpx;right: 20rpx;width: 40rpx;height: 40rpx;"></image>
 		</view>
 	</view>
 </template>
@@ -118,7 +128,8 @@
 				timerCount: 5,
 				isReward: false,
 				reward: {},
-				web_isReward: false
+				web_isReward: false,
+				play: false
 			}
 		},
 
@@ -131,15 +142,15 @@
 
 			if (options[0].parent_no) {
 				var res = self.$Token.getProjectToken(function() {
-					self.$Utils.loadAll(['getMainData'], self)
+					self.$Utils.loadAll(['getMainData', 'getLabelData'], self)
 				}, {
 					parent_no: options[0].parent_no
 				});
 				if (res) {
-					self.$Utils.loadAll(['getMainData'], self)
+					self.$Utils.loadAll(['getMainData', 'getLabelData'], self)
 				};
 			} else {
-				self.$Utils.loadAll(['getMainData'], self);
+				self.$Utils.loadAll(['getMainData', 'getLabelData'], self);
 			}
 
 			//self.$Utils.loadAll(['getMainData'], self);			
@@ -147,7 +158,8 @@
 
 		onShow() {
 			const self = this;
-			self.getUserData()
+			self.getUserData();
+
 		},
 
 
@@ -169,8 +181,7 @@
 						uni.setStorageSync('token_expire_time', 1565505988000)
 					}
 					console.log('res', res)
-					self.getUserData();
-					self.getMainData()
+					self.$Utils.finishFunc('tokenGet');
 				};
 				self.$apis.tokenGet(postData, callback);
 			},
@@ -185,10 +196,57 @@
 					if (res.info.data.length > 0) {
 						self.userData = res.info.data[0]
 					}
+
 					console.log('res', res)
 
 				};
 				self.$apis.userGet(postData, callback);
+			},
+
+			getLabelData() {
+				const self = this;
+				const postData = {
+					searchItem: {
+						title: '首页音乐'
+					}
+				};
+				console.log('postData', postData)
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.labelData = res.info.data[0]
+						self.innerAudioContext = null;
+						self.innerAudioContext = uni.createInnerAudioContext();
+						console.log('innerAudioContext', self.innerAudioContext)
+						self.innerAudioContext.autoplay = true;
+						self.innerAudioContext.loop = true;
+						self.innerAudioContext.src = self.labelData.mainImg[0].url;
+						document.addEventListener('WeixinJSBridgeReady', function () {
+						      self.innerAudioContext.play();
+							  self.play=true
+						 }, false)
+
+						/* self.innerAudioContext.onPlay(() => {
+						  console.log('开始播放');
+						});
+						self.innerAudioContext.onError((res) => {
+						  console.log(res.errMsg);
+						  console.log(res.errCode);
+						}); */
+					}
+					self.$Utils.finishFunc('getLabelData');
+				};
+				self.$apis.labelGet(postData, callback);
+			},
+
+			radioClick() {
+				const self = this;
+				if (self.play) {
+					self.innerAudioContext.pause();
+					self.play = false
+				} else {
+					self.innerAudioContext.play();
+					self.play = true
+				}
 			},
 
 			getMainData() {
@@ -203,14 +261,16 @@
 				console.log('postData', postData)
 				const callback = (res) => {
 					if (res.info.data.length > 0) {
-						if(res.info.data.length>3){
+						if (res.info.data.length > 3) {
 							var scrollCount = res.info.data.length - 3;
-						}else{
+						} else {
 							var scrollCount = 0;
 						}
-						
-						const runkeyframes = "@keyframes aDirection {from {left: 0;}to {left: " + (scrollCount*33.3+100) + "%;}} .anim {animation: aDirection "+ (scrollCount*0.93+2.8) +"s linear infinite;-webkit-animation: aDirection "+ (scrollCount*0.93+2.8)+"s linear infinite;}";
-						console.log('runkeyframes',runkeyframes)
+
+						const runkeyframes = "@keyframes aDirection {from {left: 0;}to {left: " + (scrollCount * 33.3 + 100) +
+							"%;}} .anim {animation: aDirection " + (scrollCount * 0.93 + 2.8) +
+							"s linear infinite;-webkit-animation: aDirection " + (scrollCount * 0.93 + 2.8) + "s linear infinite;}";
+						console.log('runkeyframes', runkeyframes)
 						// 创建style标签
 						const style = document.createElement('style');
 						// 设置style属性
@@ -218,21 +278,21 @@
 						// 将 keyframes样式写入style内
 						style.innerHTML = runkeyframes;
 						// 将style样式存放到head标签
-						console.log('document',document)
+						console.log('document', document)
 						document.getElementsByTagName('head')[0].appendChild(style);
-						
-						
+
+
 						self.mainData.push(res.info.data[0]);
 						//self.mainData.push.apply(self.mainData, res.info.data);
 						for (var i = 1; i < res.info.data.length; i++) {
-							(function(i){
+							(function(i) {
 								setTimeout(function() {
-									console.log('i',i)
+									console.log('i', i)
 									self.mainData.push(res.info.data[i]);
-									console.log('self.mainData',self.mainData)
-								}, i*950);
-							})(i)	
-						};	
+									console.log('self.mainData', self.mainData)
+								}, i * 950);
+							})(i)
+						};
 					}
 					console.log('res', res)
 					self.$Utils.finishFunc('getMainData');
@@ -338,15 +398,23 @@
 </script>
 
 <style scoped>
-	
 	@import url("../../assets/style/public.css");
 
-	.scroll-view-item_H{ display: inline-block;}
-	
+	.scroll-view-item_H {
+		display: inline-block;
+	}
 
-	
-	.springBj{ width: 100%; height: 20%; position: absolute; top:0rpx;left: 0;background: url(../../static/images/springBj.png) no-repeat center 0/100% 100%;}
-	
+
+
+	.springBj {
+		width: 100%;
+		height: 20%;
+		position: absolute;
+		top: 0rpx;
+		left: 0;
+		background: url(../../static/images/springBj.png) no-repeat center 0/100% 100%;
+	}
+
 
 	.bear-cont {
 		width: 130rpx;
@@ -362,7 +430,8 @@
 		left: 50%;
 		transform: translateX(-50%);
 	}
-	.bear-cont .item_name{
+
+	.bear-cont .item_name {
 		/* width: 100%; */
 		line-height: 40rpx;
 		background: #1e4dd3;
@@ -371,7 +440,8 @@
 		padding: 0 6rpx;
 		box-sizing: border-box;
 	}
-	.bear-cont .item_msg{
+
+	.bear-cont .item_msg {
 		line-height: 34rpx;
 		background: #fff;
 		font-size: 24rpx;
@@ -428,7 +498,8 @@
 		width: 100rpx;
 		position: absolute;
 		right: 2%;
-		top: 20%;
+		top: 30%;
+		z-index: 9999;
 	}
 
 	.header_menu_item {

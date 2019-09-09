@@ -2,8 +2,8 @@ const CONFIG = {
 	
         //开发环境配置http://106.12.155.217/project/
         development: {
-                loginTitleTxt: "欢迎使用选购商城", // 登录页标题
-                copyrightTxt: "选购商城v1.0", // 版本信息
+                loginTitleTxt: "欢迎使用源集商城", // 登录页标题
+                copyrightTxt: "源集商城v1.0", // 版本信息
                 assetsPath: "http://www.yuanjishangcheng.com", // 静态资源路径
                 baseUrl: "http://www.yuanjishangcheng.com/api/public/index.php/api/v1/",
                 tokenKey: "WECHAT_TRADE", // 登录标识
@@ -14,8 +14,8 @@ const CONFIG = {
 
         //生产环境配置
         production: {
-                loginTitleTxt: "欢迎使用选购商城", // 登录页标题
-                copyrightTxt: "选购商城v1.0", // 版本信息
+                loginTitleTxt: "欢迎使用源集商城", // 登录页标题
+                copyrightTxt: "源集商城v1.0", // 版本信息
                 assetsPath: "http://www.yuanjishangcheng.com/wx/", // 静态资源路径
                 baseUrl: "http://www.yuanjishangcheng.com/api/public/index.php/api/v1/",
                 tokenKey: "WECHAT_TRADE", // 登录标识
