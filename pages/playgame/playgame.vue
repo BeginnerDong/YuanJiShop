@@ -7,14 +7,11 @@
 				<view style="width:15px;margin: 0 auto; transition: all 1s;" :style="'height:'+ropeHeight+'%'">
 					<image style="width: 100%;height: 100%;" src="../../static/images/rope.png" mode=""></image>
 				</view>
-				<view class="header_hook" style="text-align: center;" v-show="hockStatus=='open'">
-					<image style="width: 75px;height: 46px;" src="../../static/images/hockopen.png" mode=""></image>
+				<view class="header_hook" style="text-align: center;height: 46px;position: absolute; transition: all 1s;" :style="'top:'+ropeHeight+'%'" >
+					<image style="width: 75px;height: 46px;" :src="hockStatus=='open'?'../../static/images/hockopen.png':'../../static/images/hockclose.png'" mode=""></image>
 				</view>
-				<view class="header_hook" style="text-align: center;" v-show="hockStatus=='close'&&!web_isReward">
-					<image style="width: 75px;height: 46px;" src="../../static/images/hockclose.png" mode=""></image>
-				</view>
-				<view class="header_hook" style="text-align: center;" v-show="hockStatus=='close'&&web_isReward">
-					<image style="width: 160rpx;height: 188rpx;" src="http://106.12.155.217/yjsc/public/uploads/2/20190809/ab1094859169c39eb34cbf15071bbb6aid5.png"
+				<view class="header_hook" :class="{ dropDowm:isDrop }" style="transition:all 1s linear;text-align: center;position: absolute;z-index:9999999999999999999999999"   v-show="rewardStatus" >
+					<image style="width: 160rpx;height: 188rpx;" :src="rewardUrl"
 					 mode=""></image>
 				</view>
 			</view>
@@ -29,7 +26,6 @@
 					<image class="header_menu_img" src="../../static/images/home-icon2.png"></image>
 					<span class="header_menu_name flex">个人中心</span>
 				</view>
-
 			</view>
 			<view class="header_menu" style="left: 2%;">
 				<view class="header_menu_item flex flexCenter" @click="webself.$Router.navigateTo({route:{path:'/pages/productsexchange/productsexchange'}})">
@@ -101,7 +97,7 @@
 							<image :src="status=='ready'?'../../static/images/star2.png':'../../static/images/star1.png' " style="width: 110rpx; height:53rpx; margin: 0 auto;"></image>
 						</view>
 						<view style="width: 100%;height: 8rpx;"></view>
-						<view class="start_info_time">{{status=='ready'?timerCount+'s':'10币/一次'}}</view>
+						<view class="start_info_time"></view>
 					</view>
 				</view>
 			</view>
@@ -131,7 +127,12 @@
 				web_isReward: false,
 				play: false,
 				startTime:0,
-				totalLength:0
+				totalLength:0,
+				rewardIndex:false,
+				isDrop:false,
+				rewardHeight:100,
+				rewardStatus:false,
+				rewardUrl:''
 			}
 		},
 
@@ -263,12 +264,13 @@
 				console.log('postData', postData)
 				const callback = (res) => {
 					self.totalLength = res.info.data.length;
+					self.orginData = res.info.data;
 					if (res.info.data.length > 0) {
 						if (res.info.data.length > 4) {
 							var scrollCount = res.info.data.length - 4;
 						} else {
 							var scrollCount = 0;
-						}
+						};
 
 						const runkeyframes = "@keyframes aDirection {from {left: 0;}to {left: " + (scrollCount * 25 + 100) +
 							"%;}} .anim {animation: aDirection " + (scrollCount * 0.7 + 2.8) +
@@ -327,92 +329,69 @@
 					}else{
 						index = self.totalLength - 1;
 					};
-
-					console.log('gapTime',gapTime);
-					console.log('index',index);
-					const postData = {
-						tokenFuncName: 'getProjectToken'
-					};
-					self.timerCount = 5;
+					self.rewardIndex = index;
 					self.isReward = false;
-					self.web_isReward = false;
-					const callback = (res) => {
-						self.status = 'ready';
-
-						self.userData.info.balance = res.info.balance;
-						if (res.info.product_no) {
-							self.isReward = true;
-							self.reward = res.info.productInfo;
-						};
-						self.newData.push({
-							url: '../../static/images/gift.png',
-						}, );
-						self.interval = setTimeout(function() {
-							self.newData.push({
-								url: '../../static/images/gift.png',
-							});
-						}, 700);
-
-						setTimeout(function() {
-							self.newData.push({
-								url: '../../static/images/gift.png',
-							});
-						}, 1900);
-
-						setTimeout(function() {
-							self.newData.push({
-								url: '../../static/images/gift.png',
-							});
-						}, 2850);
-
-						/* self.timeInterVal = setInterval(function() {
-							if (self.timerCount > 0) {
-								self.timerCount--;
-							} else {
-								clearInterval(self.timeInterVal);
-								if (self.status == 'ready') {
-									self.go()
-								};
-							};
-						}, 1000) */
-						//self.$Utils.showToast(res.msg,'none');
-						console.log('res', res)
-					};
-					console.log('self.$apis.draw', self.$apis.draw);
-					self.go()
-					self.$apis.draw(postData, callback);
+					
+					self.go(self.rewardIndex);
+					
 					return;
-				};
-
-				if (self.status == 'ready' && self.timerCount > 0) {
-					self.go()
 				};
 
 			},
 
-			go() {
+			go(rewardIndex) {
 				const self = this;
 				self.ropeHeight = 70;
 				self.status = 'go';
+				var rewardIndex = rewardIndex;
+				
 				setTimeout(function() {
 					self.hockStatus = 'close';
 					self.ropeHeight = 20;
-					if (self.isReward) {
-						self.web_isReward = true;
+					self.rewardUrl = self.orginData[self.rewardIndex]['mainImg'][0]['url'];
+					self.rewardStatus = true;
+					console.log('self.orginData',self.orginData);
+					
+					console.log('rewardIndex',rewardIndex);
+					const postData = {
+						tokenFuncName: 'getProjectToken',
+						data:{
+							id:self.orginData[rewardIndex].id
+						}
 					};
-					setTimeout(function() {
-						if (self.isReward) {
-							self.$Utils.showToast('恭喜！你的奖品：' + self.reward.title, 'none');
-						} else {
-							self.$Utils.showToast('下次好运', 'none');
-						};
-						self.hockStatus = 'open';
-						self.status = 'none';
-					}, 1200)
-				}, 1200);
+					const callback = (res) => {
+						setTimeout(function(){
+							self.status = 'ready';
+							self.userData.info.balance = res.info.balance;
+							self.hockStatus = 'open';
+							if (res.info.type==1) {
+								self.isReward = true;
+								self.rewardStatus = false;
+								self.$Utils.showToast('恭喜！你的奖品：' + self.orginData[rewardIndex].title, 'none');
+							}else{
+								self.dropDowm()
+							};
+							self.status = 'none';
+						},500);
+						//self.$Utils.showToast(res.msg,'none');
+					};
+					
+					self.$apis.draw(postData, callback);
+					
+				}, 1000);
+			},
+			
+			dropDowm(){
+				const self = this;
+				self.hockStatus = 'open';
+				self.isDrop = true;
+				setTimeout(function(){
+					self.$Utils.showToast('下次好运', 'none');
+					self.rewardStatus = false;
+					self.isDrop = false;
+				},600);
 			}
-
-
+			
 		},
 
 
@@ -426,8 +405,6 @@
 		display: inline-block;
 	}
 
-
-
 	.springBj {
 		width: 100%;
 		height: 20%;
@@ -436,7 +413,6 @@
 		left: 0;
 		background: url(../../static/images/springBj.png) no-repeat center 0/100% 100%;
 	}
-
 
 	.bear-cont {
 		width: 130rpx;
@@ -649,5 +625,11 @@
 		color: #FF556B;
 		line-height: 26rpx;
 		margin: 0 auto;
+	}
+	
+	
+	.dropDowm {
+		
+		transform:translateY(1000px);
 	}
 </style>
