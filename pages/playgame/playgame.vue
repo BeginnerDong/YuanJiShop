@@ -144,7 +144,7 @@
 			self.timestampNow = (new Date()).getTime();
 			var options = self.$Utils.getHashParameters();
 
-			/* if (options[0].parent_no) {
+			if (options[0].parent_no) {
 				var res = self.$Token.getProjectToken(function() {
 					self.$Utils.loadAll(['getMainData', 'getLabelData'], self)
 				}, {
@@ -155,9 +155,9 @@
 				};
 			} else {
 				self.$Utils.loadAll(['getMainData', 'getLabelData'], self);
-			} */
+			}
 
-			self.$Utils.loadAll(['getMainData','tokenGet'], self);				
+			//self.$Utils.loadAll(['getMainData','tokenGet'], self);				
 		},
 
 		onShow() {

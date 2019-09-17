@@ -19,7 +19,7 @@ class Token {
     }
 
 	getProjectToken(callback,postData) { 
-		return uni.getStorageSync('user_token');
+		//return uni.getStorageSync('user_token');
 		var pass = true;
 		if(postData&&postData.refreshToken){
 			uni.removeStorageSync('user_token');
