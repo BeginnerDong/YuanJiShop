@@ -64,7 +64,7 @@
 				</scroll-view> -->
 
 				<view style="position: relative;width: 100%;height: 150px;">
-					<view class="anim" style="position: absolute;top: 0;left: 0;width: 33.3%;text-align: center;" v-for="(item,index) in mainData"
+					<view class="anim" style="position: absolute;top: 0;left: 0;width: 33.3%;text-align: center;webkit-transform: translate3d(0,0,0);-moz-transform: translate3d(0,0,0);-ms-transform: translate3d(0,0,0);-o-transform: translate3d(0,0,0);transform: translate3d(0,0,0);" v-for="(item,index) in mainData"
 					 :key="index">
 						<image style="width: 160rpx;height: 188rpx;" :src="item.mainImg&&item.mainImg[0]?item.mainImg[0].url:''"></image>
 						<view class="item_name overflow1">{{item.title}}{{index}}</view>
@@ -132,7 +132,8 @@
 				isDrop:false,
 				rewardHeight:100,
 				rewardStatus:false,
-				rewardUrl:''
+				rewardUrl:'',
+				nowIndex:1
 			}
 		},
 
@@ -272,8 +273,8 @@
 							var scrollCount = 0;
 						};
 
-						const runkeyframes = "@keyframes aDirection {from {left: 0;}to {left: " + (scrollCount * 25 + 100) +
-							"%;}} .anim {animation: aDirection " + (scrollCount * 0.7 + 2.8) +
+						const runkeyframes = "@keyframes aDirection {from {transform:translateX(0px);;}to {transform:translateX(" + ((res.info.data.length-1) * 100) +
+							"%);}} .anim {animation: aDirection " + (scrollCount * 0.7 + 2.8) +
 							"s linear infinite;-webkit-animation: aDirection " + (scrollCount * 0.7 + 2.8) + "s linear infinite;}";
 						console.log('runkeyframes', runkeyframes)
 						// 创建style标签
@@ -287,12 +288,22 @@
 						document.getElementsByTagName('head')[0].appendChild(style);
 
 						self.mainData.push(res.info.data[0]);
+						console.log('(new Date()).getTime()',(new Date()).getTime())
 						self.startTime = (new Date()).getTime();
 						//self.mainData.push.apply(self.mainData, res.info.data);
+						/* self.testInterval =  setInterval(function(){
+							if(self.nowIndex<res.info.data.length-1){
+								self.mainData.push(res.info.data[self.nowIndex]);
+								self.nowIndex++;
+							}else{
+								clearInterval(self.testInterval)
+							};
+						},700); */
 						for (var i = 1; i < res.info.data.length; i++) {
 							(function(i) {
 								setTimeout(function() {
 									console.log('i', i)
+									console.log('(new Date()).getTime()',(new Date()).getTime())
 									self.mainData.push(res.info.data[i]);
 									console.log('self.mainData', self.mainData)
 								}, i * 700);
