@@ -146,24 +146,24 @@
 
 			if (options[0].parent_no) {
 				var res = self.$Token.getProjectToken(function() {
-					self.$Utils.loadAll(['getMainData', 'getLabelData'], self)
+					self.$Utils.loadAll(['getLabelData'], self)
 				}, {
 					parent_no: options[0].parent_no
 				});
 				if (res) {
-					self.$Utils.loadAll(['getMainData', 'getLabelData'], self)
+					self.$Utils.loadAll(['getLabelData'], self)
 				};
 			} else {
-				self.$Utils.loadAll(['getMainData', 'getLabelData'], self);
+				self.$Utils.loadAll(['getLabelData'], self);
 			}
 
-			//self.$Utils.loadAll(['getMainData','tokenGet'], self);				
+			//self.$Utils.loadAll(['tokenGet'], self);				
 		},
 
 		onShow() {
 			const self = this;
 			self.getUserData();
-
+			self.getMainData();
 		},
 
 
@@ -255,6 +255,7 @@
 
 			getMainData() {
 				const self = this;
+				self.mainData = [];
 				const postData = {
 					searchItem: {
 						thirdapp_id: 2,
@@ -273,7 +274,7 @@
 							var scrollCount = 0;
 						};
 
-						const runkeyframes = "@keyframes aDirection {from {transform:translateX(0px);;}to {transform:translateX(" + ((res.info.data.length-1) * 100) +
+						const runkeyframes = "@keyframes aDirection {from {transform:translateX(0);;}to {transform:translateX(" + ((res.info.data.length-1) * 100) +
 							"%);}} .anim {animation: aDirection " + (scrollCount * 0.7 + 2.8) +
 							"s linear infinite;-webkit-animation: aDirection " + (scrollCount * 0.7 + 2.8) + "s linear infinite;}";
 						console.log('runkeyframes', runkeyframes)
